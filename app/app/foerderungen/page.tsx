@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import {
@@ -848,54 +848,209 @@ function Screen1C({ profil, onChange, errors, onBack, onNext }: { profil: Profil
 }
 
 // ── Loading texts ──────────────────────────────────────────────────────────
-function Screen1b({ nutzertyp, profil }: { nutzertyp: Nutzertyp; profil: Profil }) {
-  const bl = (profil.bundesland as string) || "";
-  const ort = bl ? `in ${bl}` : "in Deutschland";
-  const TEXTS: Record<NonNullable<Nutzertyp>, string[]> = {
-    "": [],
-    privatperson: [
-      `Wir suchen die besten Förderungen für Privatpersonen ${ort}…`,
-      "Prüfe Heizungs- und Gebäudeförderungen…",
-      "Berechne KfW- und BAFA-Passungsquoten…",
-      "Prüfe regionale Sonderprogramme…",
-      "Bereite Ergebnisse vor…",
-    ],
-    handwerker: [
-      `Wir suchen Betriebsförderungen für ${(profil.branche as string) || "Handwerksbetriebe"} ${ort}…`,
-      "Durchsuche Handwerksförderungen…",
-      "Analysiere Kundenprojekt-Programme…",
-      "Prüfe regionale Kammerprogramme…",
-      "Bereite Ergebnisse vor…",
-    ],
-    kmu: [
-      `Wir suchen Unternehmensförderungen für ${(profil.branche as string) || "KMU"} ${ort}…`,
-      "Analysiere Innovationsförderungen…",
-      "Durchsuche KfW-Unternehmenskredite…",
-      "Prüfe EU- und Bundesförderprogramme…",
-      "Bereite Ergebnisse vor…",
-    ],
-  };
-  const texts = TEXTS[nutzertyp || "privatperson"];
-  const [idx, setIdx] = useState(0);
+// ── Screen 1b constants ────────────────────────────────────────────────────
+const LOADING_TEXTS = [
+  "Analysiere dein Vorhaben...",
+  "Durchsuche 100+ Förderprogramme...",
+  "Prüfe Kombinationsmöglichkeiten...",
+  "Berechne maximalen Förderbetrag...",
+  "Fast fertig...",
+];
+
+const LOADING_PROGRAMS: Record<string, Array<{ name: string; betrag: number }>> = {
+  privatperson: [
+    { name: "KfW 458 Heizungsförderung", betrag: 21000 },
+    { name: "BEG Einzelmaßnahmen (BAFA)", betrag: 12000 },
+    { name: "BAFA Energieberatung", betrag: 1300 },
+  ],
+  handwerker: [
+    { name: "BEG Einzelmaßnahmen (BAFA)", betrag: 24500 },
+    { name: "KfW 270 Erneuerbare Energien", betrag: 15000 },
+    { name: "BAFA Heizungsförderung", betrag: 8000 },
+  ],
+  kmu: [
+    { name: "KfW Unternehmerkredit", betrag: 25000 },
+    { name: "Digital Jetzt (BMWK)", betrag: 12000 },
+    { name: "BAFA Beratungsförderung", betrag: 4000 },
+  ],
+};
+
+// Steps end at sum of respective programs: privatperson=34300, handwerker=47500, kmu=41000
+const LOADING_STEPS: Record<string, number[]> = {
+  privatperson: [1800, 6200, 12400, 21000, 28500, 34300],
+  handwerker: [2100, 8500, 17000, 28000, 38500, 47500],
+  kmu: [1900, 7200, 15000, 24000, 33000, 41000],
+};
+
+function Screen1b({ nutzertyp }: { nutzertyp: Nutzertyp; profil: Profil }) {
+  const nt = nutzertyp || "privatperson";
+  const programs = LOADING_PROGRAMS[nt];
+  const steps = LOADING_STEPS[nt];
+
+  const [textIdx, setTextIdx] = useState(0);
+  const [stepIdx, setStepIdx] = useState(-1);
+  const [targetAmount, setTargetAmount] = useState(0);
+  const [displayAmount, setDisplayAmount] = useState(0);
+  const [visiblePrograms, setVisiblePrograms] = useState<number[]>([]);
+  const [badges, setBadges] = useState<Array<{ id: number; amount: number }>>([]);
+  const displayRef = useRef(0);
+  const rafRef = useRef<number | null>(null);
+  const badgeIdRef = useRef(0);
+
+  // Text cycling
   useEffect(() => {
-    const t = setInterval(() => setIdx((i) => Math.min(i + 1, texts.length - 1)), 600);
+    const t = setInterval(() => setTextIdx((i) => Math.min(i + 1, LOADING_TEXTS.length - 1)), 700);
     return () => clearInterval(t);
-  }, [texts.length]);
+  }, []);
+
+  // Kick off step progression
+  useEffect(() => {
+    const t = setTimeout(() => setStepIdx(0), 300);
+    return () => clearTimeout(t);
+  }, []);
+
+  // Each step: update target + show badge + schedule next
+  useEffect(() => {
+    if (stepIdx < 0 || stepIdx >= steps.length) return;
+    const newTarget = steps[stepIdx];
+    const prev = stepIdx > 0 ? steps[stepIdx - 1] : 0;
+    setTargetAmount(newTarget);
+
+    const diff = newTarget - prev;
+    if (diff <= 0) return;
+
+    const id = badgeIdRef.current++;
+    setBadges((b) => [...b, { id, amount: diff }]);
+    const removeTimer = setTimeout(() => setBadges((b) => b.filter((x) => x.id !== id)), 1300);
+
+    if (stepIdx < steps.length - 1) {
+      const nextTimer = setTimeout(() => setStepIdx((i) => i + 1), 1600 + Math.random() * 400);
+      return () => { clearTimeout(removeTimer); clearTimeout(nextTimer); };
+    }
+    return () => clearTimeout(removeTimer);
+  }, [stepIdx, steps]);
+
+  // Smooth counter animation (easing toward targetAmount)
+  useEffect(() => {
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    const animate = () => {
+      const current = displayRef.current;
+      const diff = targetAmount - current;
+      if (Math.abs(diff) < 1) {
+        displayRef.current = targetAmount;
+        setDisplayAmount(targetAmount);
+        return;
+      }
+      const next = current + diff * 0.1;
+      displayRef.current = next;
+      setDisplayAmount(Math.round(next));
+      rafRef.current = requestAnimationFrame(animate);
+    };
+    rafRef.current = requestAnimationFrame(animate);
+    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
+  }, [targetAmount]);
+
+  // Program reveal every 2s
+  useEffect(() => {
+    const timers = programs.map((_, i) =>
+      setTimeout(() => setVisiblePrograms((p) => [...p, i]), 1800 + i * 2000)
+    );
+    return () => timers.forEach(clearTimeout);
+  }, [programs]);
+
+  const fmt = (n: number) => Math.round(n).toLocaleString("de-DE") + " €";
+  const progressPct = Math.max(5, Math.min(100, ((stepIdx + 1) / steps.length) * 100));
 
   return (
-    <div className="flex flex-col items-center justify-center py-20">
-      <div className="relative mb-8">
-        <Loader2 size={56} className="text-[#1D9E75] animate-spin" />
+    <div className="flex flex-col items-center py-10 px-2">
+      {/* Spinner */}
+      <div className="relative mb-5">
+        <Loader2 size={48} className="text-[#1D9E75] animate-spin" />
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="w-3 h-3 rounded-full bg-[#1D9E75]" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#1D9E75]" />
         </div>
       </div>
-      <h2 className="text-2xl font-bold text-[#1a1a1a] mb-3">KI analysiert dein Profil</h2>
+
+      {/* Cycling text */}
       <AnimatePresence mode="wait">
-        <motion.p key={idx} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} className="text-[#6b7280] text-lg text-center">
-          {texts[idx]}
+        <motion.p
+          key={textIdx}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: 0.25 }}
+          className="text-[#6b7280] text-sm text-center mb-7"
+        >
+          {LOADING_TEXTS[textIdx]}
         </motion.p>
       </AnimatePresence>
+
+      {/* Counter box */}
+      <div className="w-full max-w-sm bg-[#f9fafb] border border-[#e5e7eb] rounded-2xl p-6 mb-5">
+        <p className="text-sm font-medium text-[#6b7280] text-center mb-3">Gefundenes Förderpotenzial:</p>
+
+        {/* Number + floating badges */}
+        <div className="relative flex justify-center items-center" style={{ height: "64px" }}>
+          <span className="font-bold text-[#1D9E75] tabular-nums" style={{ fontSize: "2.8rem", lineHeight: 1 }}>
+            {fmt(displayAmount)}
+          </span>
+          <AnimatePresence>
+            {badges.map((b) => (
+              <motion.span
+                key={b.id}
+                initial={{ opacity: 1, y: 0 }}
+                animate={{ opacity: 0, y: -44 }}
+                exit={{}}
+                transition={{ duration: 1.1, ease: "easeOut" }}
+                className="absolute top-0 right-0 bg-[#1D9E75] text-white text-xs font-bold px-2.5 py-1 rounded-full pointer-events-none whitespace-nowrap"
+              >
+                +{fmt(b.amount)}
+              </motion.span>
+            ))}
+          </AnimatePresence>
+        </div>
+
+        {/* Progress bar */}
+        <div className="mt-4 h-1.5 bg-[#e5e7eb] rounded-full overflow-hidden">
+          <motion.div
+            className="h-full bg-[#1D9E75] rounded-full"
+            initial={{ width: "5%" }}
+            animate={{ width: `${progressPct}%` }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          />
+        </div>
+        <p className="text-xs text-[#9ca3af] text-center mt-2">Suche läuft...</p>
+      </div>
+
+      {/* Program list */}
+      <div className="w-full max-w-sm space-y-2">
+        <AnimatePresence>
+          {visiblePrograms.map((i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="flex items-center justify-between bg-white border border-[#e5e7eb] rounded-xl px-4 py-2.5"
+            >
+              <div className="flex items-center gap-2.5 min-w-0">
+                <CheckCircle size={14} className="text-[#1D9E75] flex-shrink-0" />
+                <span className="text-sm text-[#374151] truncate">{programs[i].name} gefunden</span>
+              </div>
+              <span className="text-sm font-bold text-[#1D9E75] flex-shrink-0 ml-3">
+                +{fmt(programs[i].betrag)}
+              </span>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+
+        {visiblePrograms.length < programs.length && (
+          <div className="flex items-center gap-2.5 px-4 py-2.5">
+            <Loader2 size={14} className="text-[#9ca3af] animate-spin flex-shrink-0" />
+            <span className="text-sm text-[#9ca3af]">Suche nach weiteren Programmen...</span>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -1734,7 +1889,7 @@ export default function FoerderungenPage() {
   useEffect(() => {
     if (screen !== "loading") return;
     const apiProfil = buildApiProfil(nutzertyp, profil);
-    const minDelay = new Promise<void>((res) => setTimeout(res, 2000));
+    const minDelay = new Promise<void>((res) => setTimeout(res, 3000));
     const apiCall = fetch("/api/matching", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
