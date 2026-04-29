@@ -371,6 +371,228 @@ function HeroDashboardMockup() {
   );
 }
 
+// ── Förder-Rechner ─────────────────────────────────────────────────────────
+
+const VORHABEN_CARDS = [
+  { id: "heizung", emoji: "🔥", title: "Heizung tauschen", sub: "Wärmepumpe, Pellet, Solar" },
+  { id: "pv", emoji: "☀️", title: "PV-Anlage", sub: "Photovoltaik + Speicher" },
+  { id: "daemmung", emoji: "🏠", title: "Dämmung & Fenster", sub: "Fassade, Dach, Fenster" },
+  { id: "kombination", emoji: "⚡", title: "Mehreres kombinieren", sub: "Maximale Förderung" },
+] as const;
+
+type VorhabenId = (typeof VORHABEN_CARDS)[number]["id"];
+
+interface FoerderResult {
+  total: number;
+  grundFoerderung: number;
+  klimaBonus: number;
+  kombinationsBonus: number;
+  foerdersatz: string;
+}
+
+function calcFoerderung(vorhaben: VorhabenId, investition: number): FoerderResult {
+  switch (vorhaben) {
+    case "heizung": {
+      const grund = Math.min(investition * 0.3, 30000);
+      const klima = Math.min(investition * 0.2, 12000);
+      const total = Math.min(grund + klima, 30000);
+      return { total, grundFoerderung: grund, klimaBonus: klima, kombinationsBonus: 0, foerdersatz: "30–70%" };
+    }
+    case "pv": {
+      const kredit = Math.min(investition, 75000);
+      const speicher = investition * 0.1;
+      return { total: kredit + speicher, grundFoerderung: kredit, klimaBonus: speicher, kombinationsBonus: 0, foerdersatz: "Günstiger Kredit + Einspeisevergütung" };
+    }
+    case "daemmung": {
+      const foerderfaehig = Math.min(investition, 60000);
+      const grund = foerderfaehig * 0.15;
+      const isfp = foerderfaehig * 0.05;
+      return { total: grund + isfp, grundFoerderung: grund, klimaBonus: 0, kombinationsBonus: isfp, foerdersatz: "15–20%" };
+    }
+    case "kombination": {
+      const heizGrund = Math.min(investition * 0.35, 25000);
+      const klimaBonus = Math.min(investition * 0.15, 12000);
+      const komboBonus = Math.min(investition * 0.05, 5000);
+      const total = Math.min(heizGrund + klimaBonus + komboBonus, 42000);
+      return { total, grundFoerderung: heizGrund, klimaBonus, kombinationsBonus: komboBonus, foerdersatz: "bis zu 70% auf einzelne Maßnahmen" };
+    }
+  }
+}
+
+function FoerderRechner() {
+  const [selected, setSelected] = useState<VorhabenId | null>(null);
+  const [investition, setInvestition] = useState(35000);
+  const [displayAmount, setDisplayAmount] = useState(0);
+  const displayRef = useRef(0);
+  const rafRef = useRef<number | null>(null);
+
+  const result = selected ? calcFoerderung(selected, investition) : null;
+  const targetAmount = result?.total ?? 0;
+
+  useEffect(() => {
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    displayRef.current = 0;
+    setDisplayAmount(0);
+  }, [selected]);
+
+  useEffect(() => {
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    const animate = () => {
+      const current = displayRef.current;
+      const diff = targetAmount - current;
+      if (Math.abs(diff) < 1) {
+        displayRef.current = targetAmount;
+        setDisplayAmount(targetAmount);
+        return;
+      }
+      const next = current + diff * 0.12;
+      displayRef.current = next;
+      setDisplayAmount(Math.round(next));
+      rafRef.current = requestAnimationFrame(animate);
+    };
+    rafRef.current = requestAnimationFrame(animate);
+    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
+  }, [targetAmount]);
+
+  const fmt = (n: number) => Math.round(n).toLocaleString("de-DE") + " €";
+  const sliderPct = ((investition - 5000) / 95000) * 100;
+
+  return (
+    <section className="py-20 px-4 sm:px-6 bg-[#f9fafb]">
+      <div className="max-w-[800px] mx-auto">
+        <AnimatedSection className="text-center mb-10">
+          <motion.h2 variants={fadeUp} className="text-3xl sm:text-4xl font-black text-[#1a1a1a] mb-3">
+            Was könnte dir Zora bringen?
+          </motion.h2>
+          <motion.p variants={fadeUp} className="text-[#6b7280] text-lg">
+            Berechne in Sekunden dein persönliches Förderpotenzial — ohne Anmeldung.
+          </motion.p>
+        </AnimatedSection>
+
+        <AnimatedSection>
+          <motion.p variants={fadeUp} className="text-sm font-semibold text-[#1D9E75] uppercase tracking-widest mb-4">
+            Schritt 1 — Vorhaben wählen
+          </motion.p>
+          <motion.div variants={stagger} className="grid grid-cols-2 gap-3 sm:gap-4">
+            {VORHABEN_CARDS.map((v) => (
+              <motion.button
+                key={v.id}
+                variants={fadeUp}
+                onClick={() => setSelected(selected === v.id ? null : v.id)}
+                className={`relative flex flex-col items-start gap-2 p-5 rounded-2xl border-2 text-left transition-all duration-200 hover:shadow-md ${
+                  selected === v.id
+                    ? "border-[#1D9E75] bg-[#E1F5EE] shadow-md shadow-[#1D9E75]/10"
+                    : "border-[#e5e7eb] bg-white hover:border-[#1D9E75]/40"
+                }`}
+              >
+                {selected === v.id && (
+                  <span className="absolute top-3 right-3 w-5 h-5 rounded-full bg-[#1D9E75] flex items-center justify-center">
+                    <CheckCircle size={12} className="text-white" />
+                  </span>
+                )}
+                <span className="text-2xl">{v.emoji}</span>
+                <div>
+                  <p className={`font-bold text-sm sm:text-base ${selected === v.id ? "text-[#1D9E75]" : "text-[#1a1a1a]"}`}>{v.title}</p>
+                  <p className="text-xs text-[#6b7280] mt-0.5">{v.sub}</p>
+                </div>
+              </motion.button>
+            ))}
+          </motion.div>
+        </AnimatedSection>
+
+        <AnimatePresence>
+          {selected && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 16 }}
+              transition={{ duration: 0.35 }}
+              className="mt-8"
+            >
+              <p className="text-sm font-semibold text-[#1D9E75] uppercase tracking-widest mb-4">
+                Schritt 2 — Investitionssumme
+              </p>
+              <div className="bg-white rounded-2xl border border-[#e5e7eb] p-6 shadow-sm">
+                <p className="text-2xl font-black text-[#1a1a1a] mb-5 text-center">
+                  Investition: {investition.toLocaleString("de-DE")} €
+                </p>
+                <input
+                  type="range"
+                  min={5000}
+                  max={100000}
+                  step={1000}
+                  value={investition}
+                  onChange={(e) => setInvestition(Number(e.target.value))}
+                  className="w-full h-2 appearance-none rounded-full cursor-pointer"
+                  style={{
+                    accentColor: "#1D9E75",
+                    background: `linear-gradient(to right, #1D9E75 ${sliderPct}%, #e5e7eb ${sliderPct}%)`,
+                  }}
+                />
+                <div className="flex justify-between text-xs text-[#9ca3af] mt-2">
+                  <span>5.000 €</span>
+                  <span>100.000 €</span>
+                </div>
+              </div>
+
+              {result && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.97 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                  className="mt-5 bg-[#E1F5EE] border-2 border-[#1D9E75]/30 rounded-2xl p-7"
+                >
+                  <p className="text-[#1D9E75] font-semibold text-sm mb-3 text-center">Ihr möglicher Förderbetrag:</p>
+                  <p className="text-center font-black text-[#1D9E75] mb-6" style={{ fontSize: "3rem", lineHeight: 1.1 }}>
+                    {fmt(displayAmount)}
+                  </p>
+                  <div className="space-y-2.5 border-t border-[#1D9E75]/20 pt-4">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-[#374151]">Grundförderung:</span>
+                      <span className="font-semibold text-[#1a1a1a]">{fmt(result.grundFoerderung)}</span>
+                    </div>
+                    {result.klimaBonus > 0 && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-[#374151]">
+                          {selected === "pv" ? "BAFA Speicherförderung:" : "Klimabonus:"}
+                        </span>
+                        <span className="font-semibold text-[#1a1a1a]">{fmt(result.klimaBonus)}</span>
+                      </div>
+                    )}
+                    {result.kombinationsBonus > 0 && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-[#374151]">
+                          {selected === "daemmung" ? "iSFP Bonus:" : "Kombinationsbonus:"}
+                        </span>
+                        <span className="font-semibold text-[#1a1a1a]">{fmt(result.kombinationsBonus)}</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="mt-4 pt-3 border-t border-[#1D9E75]/20">
+                    <p className="text-sm text-center text-[#1D9E75] font-semibold">
+                      Fördersatz: {result.foerdersatz}
+                    </p>
+                  </div>
+                </motion.div>
+              )}
+
+              <div className="mt-6 text-center">
+                <Link
+                  href="/app/foerderungen"
+                  className="inline-flex items-center gap-2 text-base font-bold text-white bg-[#1D9E75] hover:bg-[#0F6E56] transition-all px-8 py-4 rounded-xl shadow-lg shadow-[#1D9E75]/25 hover:-translate-y-0.5"
+                >
+                  Meine genaue Förderung berechnen <ArrowRight size={18} />
+                </Link>
+                <p className="text-sm text-[#9ca3af] mt-3">Kostenlos · Keine Anmeldung nötig · In 5 Minuten</p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </section>
+  );
+}
+
 // ── Section 2: Logo Strip ──────────────────────────────────────────────────
 function LogoStrip() {
   const logos = ["Müller SHK GmbH", "Bauer Elektro", "Schmidt Dach", "TechBau GmbH", "Grün & Partner", "Energiebau Nord"];
@@ -861,7 +1083,10 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
-      {/* ── 2. LOGO STRIP ───────────────────────────────────────────────── */}
+      {/* ── 2. FÖRDER-RECHNER ───────────────────────────────────────────── */}
+      <FoerderRechner />
+
+      {/* ── 3. LOGO STRIP ───────────────────────────────────────────────── */}
       <LogoStrip />
 
       {/* ── 3. PROBLEM ──────────────────────────────────────────────────── */}
