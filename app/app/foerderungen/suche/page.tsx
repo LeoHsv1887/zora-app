@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { foerderprogramme, type FoerderprogrammDB } from "@/lib/foerderprogramme";
 import { WIZARD_ROUTES } from "@/lib/wizardConfigs";
+import { FristBadgeForId } from "@/components/FristBadge";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -599,6 +600,11 @@ export default function SuchePage() {
                               ? p.maxBetrag.split(" ").slice(0, 2).join(" ")
                               : p.maxBetrag.split(" ")[0]}
                           </span>
+                        </div>
+
+                        {/* Frist Badge */}
+                        <div className="mt-1.5">
+                          <FristBadgeForId programmId={p.id} />
                         </div>
 
                         {/* Themen */}

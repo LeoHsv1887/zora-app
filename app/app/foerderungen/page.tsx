@@ -26,6 +26,8 @@ import {
 } from "lucide-react";
 import { Foerderprogramm } from "@/types";
 import { foerderprogramme, type FoerderprogrammDB } from "@/lib/foerderprogramme";
+import { programmFristen } from "@/lib/fristen";
+import { FristBadgeForId } from "@/components/FristBadge";
 import { WIZARD_ROUTES } from "@/lib/wizardConfigs";
 import Screen4Application from "@/components/screens/Screen4Application";
 
@@ -1137,8 +1139,28 @@ function Screen2({
   const topId = sorted[0]?.id;
   const nutzerLabel = NUTZERTYP_LABELS[nutzertyp] || "";
 
+  const urgentFrist = programmes
+    .map((p) => ({ id: p.id, name: p.name, frist: programmFristen[p.id] }))
+    .find((p) => p.frist?.dringlichkeit === "hoch");
+
   return (
     <div>
+      {/* Urgency banner */}
+      {urgentFrist && (
+        <div
+          className="flex items-start justify-between gap-3 rounded-lg px-4 py-3 mb-4 text-sm"
+          style={{ background: "#FAEEDA" }}
+        >
+          <p className="text-[#633806] leading-snug">
+            <span className="font-semibold">⚠️ Achtung:</span>{" "}
+            {urgentFrist.frist.text} bei <span className="font-semibold">{urgentFrist.name}</span>. Stelle deinen Antrag rechtzeitig!
+          </p>
+          <span className="text-[#854F0B] font-semibold whitespace-nowrap text-xs mt-0.5 flex-shrink-0">
+            Mehr Info →
+          </span>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex items-start gap-3 mb-1">
         <button onClick={onBack} className="text-[#6b7280] hover:text-[#1a1a1a] transition-colors mt-1">
@@ -1217,8 +1239,9 @@ function Screen2({
                   </div>
 
                   {/* Name & provider */}
-                  <p className="text-base font-medium text-[#1a1a1a] mb-0.5">{p.name}</p>
-                  <p className="text-sm text-[#6b7280] mb-4">
+                  <p className="text-base font-medium text-[#1a1a1a] mb-1">{p.name}</p>
+                  <FristBadgeForId programmId={p.id} />
+                  <p className="text-sm text-[#6b7280] mb-4 mt-1.5">
                     {p.foerdergeber} · Max. {p.maxBetrag}
                   </p>
 
