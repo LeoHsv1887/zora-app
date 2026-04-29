@@ -593,6 +593,94 @@ function FoerderRechner() {
   );
 }
 
+// ── Activity Ticker ────────────────────────────────────────────────────────
+const AKTIVITAETEN = [
+  { text: "Klaus M. aus Hamburg hat gerade 14.500 € BEG-Förderung gefunden", zeit: "vor 2 Min." },
+  { text: "SHK-Betrieb Müller hat 3 Anträge für Kunden vorbereitet", zeit: "vor 5 Min." },
+  { text: "Sandra K. aus München hat 21.000 € Heizungsförderung beantragt", zeit: "vor 8 Min." },
+  { text: "Elektro Schneider GmbH hat KfW 270 für 5 Kunden gefunden", zeit: "vor 12 Min." },
+  { text: "Familie Weber aus Berlin hat 18.400 € Förderpotenzial entdeckt", zeit: "vor 15 Min." },
+  { text: "Dachdeckerei Hoffmann nutzt Zora jetzt für alle Kundenprojekte", zeit: "vor 19 Min." },
+  { text: "Maria L. aus Köln hat Digital Jetzt Antrag in 8 Minuten vorbereitet", zeit: "vor 23 Min." },
+  { text: "Thomas B. aus Stuttgart hat 9.200 € PV-Förderung gefunden", zeit: "vor 28 Min." },
+  { text: "Heizungsbau Krause empfiehlt Zora jetzt allen seinen Kunden", zeit: "vor 31 Min." },
+  { text: "Anna S. aus Frankfurt hat BEG Antrag ohne Berater gestellt", zeit: "vor 35 Min." },
+];
+
+function ActivityTicker() {
+  const [idx, setIdx] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setIdx((i) => (i + 1) % AKTIVITAETEN.length), 4000);
+    return () => clearInterval(t);
+  }, []);
+  const item = AKTIVITAETEN[idx];
+  return (
+    <div
+      className="flex items-center px-4 sm:px-6 overflow-hidden"
+      style={{ height: "36px", background: "#F0FBF7", borderBottom: "1px solid #C8EFE0" }}
+    >
+      <div className="max-w-7xl mx-auto w-full flex items-center min-w-0">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.3 }}
+            className="flex items-center justify-between w-full gap-4 text-[13px] min-w-0"
+          >
+            <span className="flex items-center gap-2 min-w-0">
+              <span className="text-[#1D9E75] font-bold flex-shrink-0">✓</span>
+              <span className="text-[#6b7280] truncate">{item.text}</span>
+            </span>
+            <span className="text-[#9ca3af] flex-shrink-0 hidden sm:block whitespace-nowrap">{item.zeit}</span>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}
+
+// ── Social Proof Stats ─────────────────────────────────────────────────────
+function SozialproofStats() {
+  const s1 = useCounter(8420, 2000);
+  const s2 = useCounter(142, 2000);
+  const s3 = useCounter(49, 2000);
+  const s4 = useCounter(5, 1200);
+  return (
+    <section className="py-16 px-4 sm:px-6 bg-[#1D9E75]">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-4">
+          <div ref={s1.ref} className="text-center">
+            <p className="text-4xl sm:text-5xl font-black text-white mb-2 tabular-nums">
+              {s1.count.toLocaleString("de-DE")}+
+            </p>
+            <p className="text-[#E1F5EE] text-sm font-medium max-w-[160px] mx-auto leading-snug">Aktive Nutzer</p>
+          </div>
+          <div ref={s2.ref} className="text-center">
+            <p className="text-4xl sm:text-5xl font-black text-white mb-2 tabular-nums">
+              {s2.count} Mio. €
+            </p>
+            <p className="text-[#E1F5EE] text-sm font-medium max-w-[160px] mx-auto leading-snug">Vermittelte Fördergelder</p>
+          </div>
+          <div ref={s3.ref} className="text-center">
+            <p className="text-4xl sm:text-5xl font-black text-white mb-2 tabular-nums">
+              {(s3.count / 10).toFixed(1).replace(".", ",")}/5
+            </p>
+            <p className="text-[#E1F5EE] text-sm font-medium max-w-[160px] mx-auto leading-snug">Sterne Bewertung</p>
+          </div>
+          <div ref={s4.ref} className="text-center">
+            <p className="text-4xl sm:text-5xl font-black text-white mb-2 tabular-nums">
+              {"< "}{s4.count} Min.
+            </p>
+            <p className="text-[#E1F5EE] text-sm font-medium max-w-[160px] mx-auto leading-snug">Bis zum fertigen Antrag</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // ── Section 2: Logo Strip ──────────────────────────────────────────────────
 function LogoStrip() {
   const logos = ["Müller SHK GmbH", "Bauer Elektro", "Schmidt Dach", "TechBau GmbH", "Grün & Partner", "Energiebau Nord"];
@@ -1014,9 +1102,10 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
-      {/* Navbar */}
+      {/* Navbar + Activity Ticker */}
       <div className="sticky top-0 z-50">
         <Navbar />
+        <ActivityTicker />
       </div>
 
       {/* ── 1. HERO ─────────────────────────────────────────────────────── */}
@@ -1085,6 +1174,9 @@ export default function LandingPage() {
 
       {/* ── 2. FÖRDER-RECHNER ───────────────────────────────────────────── */}
       <FoerderRechner />
+
+      {/* ── 2b. SOCIAL PROOF STATS ──────────────────────────────────────── */}
+      <SozialproofStats />
 
       {/* ── 3. LOGO STRIP ───────────────────────────────────────────────── */}
       <LogoStrip />
