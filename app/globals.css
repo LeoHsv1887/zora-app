@@ -1,3 +1,6 @@
+/* ── Bricolage Grotesque ──────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,6 +9,56 @@
   --color-primary: #1D9E75;
   --color-primary-dark: #0F6E56;
   --color-primary-light: #E1F5EE;
+
+  /* Zora Landing Design System */
+  --zora-dark: #0A1F1A;
+  --zora-green: #1D9E75;
+  --zora-green-light: #2ECC9A;
+  --zora-green-dark: #0F6E56;
+  --zora-gradient: linear-gradient(135deg, #1D9E75 0%, #2ECC9A 50%, #0F9D8A 100%);
+}
+
+/* ── Landing page utilities ───────────────────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, #1D9E75, #2ECC9A);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(29,158,117,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(29,158,117,0.08) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.glass-card {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 16px;
+}
+
+/* ── Keyframe animations ──────────────────────────────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: perspective(1000px) rotateX(5deg) rotateY(-3deg) translateY(0px); }
+  50%       { transform: perspective(1000px) rotateX(5deg) rotateY(-3deg) translateY(-12px); }
+}
+
+@keyframes pulse-green {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+.dashboard-float {
+  animation: float 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+.pulse-green {
+  animation: pulse-green 2s ease-in-out infinite;
 }
 
 * {

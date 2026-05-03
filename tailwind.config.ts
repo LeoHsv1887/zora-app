@@ -20,6 +20,7 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["var(--font-inter)", "Inter", "system-ui", "sans-serif"],
+        display: ["'Bricolage Grotesque'", "var(--font-inter)", "sans-serif"],
       },
       borderRadius: {
         card: "12px",
