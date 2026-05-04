@@ -79,10 +79,10 @@ function Navbar() {
     <header
       className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
       style={{
-        background: scrolled ? "rgba(10,31,26,0.95)" : "transparent",
-        backdropFilter: scrolled ? "blur(20px)" : "none",
-        WebkitBackdropFilter: scrolled ? "blur(20px)" : "none",
-        borderBottom: scrolled ? "1px solid rgba(255,255,255,0.08)" : "none",
+        background: scrolled ? "rgba(10,31,26,0.95)" : "rgba(255,255,255,0.9)",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
+        borderBottom: scrolled ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(0,0,0,0.06)",
       }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
@@ -90,7 +90,7 @@ function Navbar() {
           <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: "linear-gradient(135deg, #1D9E75, #2ECC9A)" }}>
             <span className="text-white font-black text-sm">Z</span>
           </div>
-          <span className="font-bold text-white text-lg tracking-tight" style={{ fontFamily: BG }}>Zora</span>
+          <span className="font-bold text-lg tracking-tight" style={{ fontFamily: BG, color: scrolled ? "white" : "#0D1F1B" }}>Zora</span>
         </Link>
 
         <nav className="hidden lg:flex items-center gap-0.5">
@@ -98,8 +98,8 @@ function Navbar() {
             <a
               key={item.label}
               href={item.href}
-              className="relative text-sm font-medium px-4 py-2 rounded-lg transition-colors group hover:text-white"
-              style={{ color: "rgba(255,255,255,0.65)" }}
+              className="relative text-sm font-medium px-4 py-2 rounded-lg transition-colors group"
+              style={{ color: scrolled ? "rgba(255,255,255,0.65)" : "rgba(13,31,27,0.6)" }}
             >
               {item.label}
               <span
@@ -111,7 +111,7 @@ function Navbar() {
         </nav>
 
         <div className="hidden lg:flex items-center gap-3">
-          <Link href="/app/dashboard" className="text-sm font-medium transition-colors" style={{ color: "rgba(255,255,255,0.65)" }}>
+          <Link href="/app/dashboard" className="text-sm font-medium transition-colors" style={{ color: scrolled ? "rgba(255,255,255,0.65)" : "rgba(13,31,27,0.6)" }}>
             Anmelden
           </Link>
           <Link
@@ -123,7 +123,7 @@ function Navbar() {
           </Link>
         </div>
 
-        <button className="lg:hidden p-2 text-white" onClick={() => setMobileOpen(!mobileOpen)}>
+        <button className="lg:hidden p-2 transition-colors" style={{ color: scrolled ? "white" : "#0D1F1B" }} onClick={() => setMobileOpen(!mobileOpen)}>
           {mobileOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
@@ -938,14 +938,8 @@ export default function LandingPage() {
       {/* ── 1. HERO ─────────────────────────────────────────────────────── */}
       <section
         className="relative min-h-screen flex flex-col items-center justify-center pt-28 pb-32 px-4 sm:px-6 overflow-hidden"
-        style={{ background: "#0A1F1A" }}
+        style={{ background: "#FFFFFF" }}
       >
-        <div className="absolute inset-0 hero-grid pointer-events-none" />
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-1/3 left-1/4 w-[600px] h-[600px] rounded-full blur-3xl" style={{ background: "radial-gradient(circle, rgba(29,158,117,0.12) 0%, transparent 70%)" }} />
-          <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full blur-3xl" style={{ background: "radial-gradient(circle, rgba(46,204,154,0.07) 0%, transparent 70%)" }} />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[400px] rounded-full blur-3xl" style={{ background: "radial-gradient(ellipse, rgba(15,110,86,0.08) 0%, transparent 70%)" }} />
-        </div>
 
         <motion.div initial="hidden" animate="visible" variants={stagger} className="relative text-center max-w-[900px] mx-auto w-full">
           <motion.div
@@ -954,7 +948,7 @@ export default function LandingPage() {
             style={{ background: "rgba(29,158,117,0.15)", border: "1px solid rgba(29,158,117,0.3)" }}
           >
             <span className="w-2 h-2 rounded-full pulse-green" style={{ background: "#2ECC9A" }} />
-            <span className="text-sm font-semibold" style={{ color: "#2ECC9A" }}>
+            <span className="text-sm font-semibold" style={{ color: "#1D9E75" }}>
               ✦ KI-gestützte Förderplattform · Jetzt live
             </span>
           </motion.div>
@@ -964,15 +958,15 @@ export default function LandingPage() {
             className="font-black leading-[1.05] mb-6 tracking-tight"
             style={{ fontFamily: BG, fontSize: "clamp(48px, 7vw, 84px)" }}
           >
-            <span className="block text-white">Fördermittel.</span>
-            <span className="block text-white">Endlich einfach.</span>
+            <span className="block" style={{ color: "#0D1F1B" }}>Fördermittel.</span>
+            <span className="block" style={{ color: "#0D1F1B" }}>Endlich einfach.</span>
             <span className="block gradient-text">Mit Zora.</span>
           </motion.h1>
 
           <motion.p
             variants={fadeUp}
             className="text-lg max-w-[520px] mx-auto mb-10 leading-relaxed"
-            style={{ color: "rgba(255,255,255,0.6)" }}
+            style={{ color: "#6B7F7A" }}
           >
             Zora findet die passenden Förderprogramme für dich — und bereitet den Antrag vollständig vor.
           </motion.p>
@@ -987,8 +981,8 @@ export default function LandingPage() {
             </Link>
             <a
               href="#features"
-              className="flex items-center gap-2 text-base font-semibold px-8 py-4 rounded-xl transition-all hover:bg-white/10 w-full sm:w-auto justify-center"
-              style={{ color: "rgba(255,255,255,0.8)", border: "1px solid rgba(255,255,255,0.2)" }}
+              className="flex items-center gap-2 text-base font-semibold px-8 py-4 rounded-xl transition-all hover:bg-black/5 w-full sm:w-auto justify-center"
+              style={{ color: "#0D1F1B", border: "1px solid rgba(13,31,27,0.2)" }}
             >
               Mehr erfahren
             </a>
@@ -998,13 +992,13 @@ export default function LandingPage() {
             variants={fadeUp}
             className="flex items-center justify-center gap-4 mb-16 text-sm flex-wrap"
           >
-            <span className="flex items-center gap-1.5" style={{ color: "rgba(255,255,255,0.6)" }}>
+            <span className="flex items-center gap-1.5" style={{ color: "#6B7F7A" }}>
               <span className="text-amber-400">★★★★★</span> 4,9 / 5 Sterne
             </span>
             <span style={{ color: "rgba(29,158,117,0.5)" }}>|</span>
-            <span style={{ color: "rgba(255,255,255,0.6)" }}>2.500+ Förderprogramme</span>
+            <span style={{ color: "#6B7F7A" }}>2.500+ Förderprogramme</span>
             <span style={{ color: "rgba(29,158,117,0.5)" }}>|</span>
-            <span style={{ color: "rgba(255,255,255,0.6)" }}>5 Min. bis zum Antrag</span>
+            <span style={{ color: "#6B7F7A" }}>5 Min. bis zum Antrag</span>
           </motion.div>
 
           <motion.div
