@@ -69,8 +69,8 @@ export default function NeuigkeitenPage() {
     >
       {/* Header */}
       <motion.div variants={fadeUp}>
-        <h2 className="text-2xl font-bold text-[#1a1a1a] mb-1">Neuigkeiten rund um Fördermittel</h2>
-        <p className="text-[#6b7280]">Aktuelle Änderungen bei Förderprogrammen, neue Regelungen und Tipps</p>
+        <h2 className="text-2xl font-bold mb-1" style={{ color: "#0D1F1B", fontFamily: "'Bricolage Grotesque', sans-serif" }}>Neuigkeiten rund um Fördermittel</h2>
+        <p style={{ color: "#6B7F7A" }}>Aktuelle Änderungen bei Förderprogrammen, neue Regelungen und Tipps</p>
       </motion.div>
 
       {/* News Grid */}
@@ -86,16 +86,19 @@ export default function NeuigkeitenPage() {
               hidden: { opacity: 0, y: 20 },
               visible: { opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.4 } },
             }}
-            className="bg-white rounded-xl border border-[#e5e7eb] p-5 hover:shadow-md transition-all group flex flex-col"
+            className="bg-white rounded-xl p-5 transition-all duration-200 group flex flex-col"
+            style={{ border: "1px solid #E2EAE8", boxShadow: "0 4px 16px rgba(0,0,0,0.06)" }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.boxShadow = "0 8px 32px rgba(29,158,117,0.12)"; (e.currentTarget as HTMLDivElement).style.transform = "translateY(-2px)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.boxShadow = "0 4px 16px rgba(0,0,0,0.06)"; (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)"; }}
           >
             <div className="flex items-center justify-between mb-3">
               <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${card.badgeColor}`}>
                 {card.badge}
               </span>
-              <span className="text-xs text-[#9ca3af]">{card.date}</span>
+              <span className="text-xs" style={{ color: "#6B7F7A" }}>{card.date}</span>
             </div>
-            <h3 className="text-sm font-bold text-[#1a1a1a] mb-2 leading-snug">{card.title}</h3>
-            <p className="text-sm text-[#6b7280] leading-relaxed flex-1 mb-4">{card.text}</p>
+            <h3 className="text-sm font-bold mb-2 leading-snug" style={{ color: "#0D1F1B", fontFamily: "'Bricolage Grotesque', sans-serif" }}>{card.title}</h3>
+            <p className="text-sm leading-relaxed flex-1 mb-4" style={{ color: "#6B7F7A" }}>{card.text}</p>
             <a
               href="#"
               className="inline-flex items-center gap-1 text-xs font-semibold text-[#1D9E75] hover:text-[#0F6E56] transition-colors group-hover:gap-2"

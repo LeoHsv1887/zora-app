@@ -319,7 +319,7 @@ function Screen0({ nutzertyp, onSelect, onNext }: { nutzertyp: Nutzertyp; onSele
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-[#1a1a1a] mb-1">Für wen suchst du Förderungen?</h2>
+      <h2 className="text-2xl font-bold mb-1" style={{ color: "#0D1F1B", fontFamily: "'Bricolage Grotesque', sans-serif" }}>Für wen suchst du Förderungen?</h2>
       <p className="text-[#6b7280] mb-8">Je nach deiner Situation zeigen wir dir die passenden Programme und Fragen.</p>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         {cards.map((c) => {
@@ -345,7 +345,7 @@ function Screen0({ nutzertyp, onSelect, onNext }: { nutzertyp: Nutzertyp; onSele
         })}
       </div>
       <button onClick={onNext} disabled={!nutzertyp}
-        className="w-full flex items-center justify-center gap-2 text-base font-semibold text-white bg-[#1D9E75] hover:bg-[#0F6E56] disabled:opacity-40 disabled:cursor-not-allowed transition-colors px-6 py-3.5 rounded-lg">
+        className="zora-btn-primary w-full flex items-center justify-center gap-2 text-base px-6 py-3.5">
         Weiter <ChevronRight size={18} />
       </button>
     </div>
@@ -361,7 +361,7 @@ function Screen1A({ profil, onChange, errors, onBack, onNext }: { profil: Profil
     <div>
       <div className="flex items-center gap-3 mb-1">
         <button onClick={onBack} className="text-[#6b7280] hover:text-[#1a1a1a] transition-colors"><ChevronLeft size={20} /></button>
-        <h2 className="text-2xl font-bold text-[#1a1a1a]">Erzähl uns von deinem Vorhaben</h2>
+        <h2 className="text-2xl font-bold" style={{ color: "#0D1F1B", fontFamily: "'Bricolage Grotesque', sans-serif" }}>Erzähl uns von deinem Vorhaben</h2>
       </div>
       <p className="text-[#6b7280] mb-6 ml-8">Je genauer deine Angaben, desto besser das Matching.</p>
 
@@ -511,7 +511,7 @@ function Screen1A({ profil, onChange, errors, onBack, onNext }: { profil: Profil
         </div>
       </div>
 
-      <button onClick={onNext} className="mt-8 w-full flex items-center justify-center gap-2 text-base font-semibold text-white bg-[#1D9E75] hover:bg-[#0F6E56] transition-colors px-6 py-3.5 rounded-lg">
+      <button onClick={onNext} className="zora-btn-primary mt-8 w-full flex items-center justify-center gap-2 text-base px-6 py-3.5">
         KI-Matching starten <ChevronRight size={18} />
       </button>
     </div>
@@ -529,7 +529,7 @@ function Screen1B({ profil, onChange, errors, onBack, onNext }: { profil: Profil
     <div>
       <div className="flex items-center gap-3 mb-1">
         <button onClick={onBack} className="text-[#6b7280] hover:text-[#1a1a1a] transition-colors"><ChevronLeft size={20} /></button>
-        <h2 className="text-2xl font-bold text-[#1a1a1a]">Erzähl uns von deinem Betrieb</h2>
+        <h2 className="text-2xl font-bold" style={{ color: "#0D1F1B", fontFamily: "'Bricolage Grotesque', sans-serif" }}>Erzähl uns von deinem Betrieb</h2>
       </div>
       <p className="text-[#6b7280] mb-6 ml-8">Wir finden passende Förderungen für deinen Betrieb und deine Kundenprojekte.</p>
 
@@ -664,7 +664,7 @@ function Screen1B({ profil, onChange, errors, onBack, onNext }: { profil: Profil
         )}
       </div>
 
-      <button onClick={onNext} className="mt-8 w-full flex items-center justify-center gap-2 text-base font-semibold text-white bg-[#1D9E75] hover:bg-[#0F6E56] transition-colors px-6 py-3.5 rounded-lg">
+      <button onClick={onNext} className="zora-btn-primary mt-8 w-full flex items-center justify-center gap-2 text-base px-6 py-3.5">
         KI-Matching starten <ChevronRight size={18} />
       </button>
     </div>
@@ -693,7 +693,7 @@ function Screen1C({ profil, onChange, errors, onBack, onNext }: { profil: Profil
     <div>
       <div className="flex items-center gap-3 mb-1">
         <button onClick={onBack} className="text-[#6b7280] hover:text-[#1a1a1a] transition-colors"><ChevronLeft size={20} /></button>
-        <h2 className="text-2xl font-bold text-[#1a1a1a]">Erzähl uns von deinem Unternehmen</h2>
+        <h2 className="text-2xl font-bold" style={{ color: "#0D1F1B", fontFamily: "'Bricolage Grotesque', sans-serif" }}>Erzähl uns von deinem Unternehmen</h2>
       </div>
       <p className="text-[#6b7280] mb-6 ml-8">Wir zeigen dir passende Unternehmensförderungen.</p>
 
@@ -842,7 +842,7 @@ function Screen1C({ profil, onChange, errors, onBack, onNext }: { profil: Profil
         </div>
       </div>
 
-      <button onClick={onNext} className="mt-8 w-full flex items-center justify-center gap-2 text-base font-semibold text-white bg-[#1D9E75] hover:bg-[#0F6E56] transition-colors px-6 py-3.5 rounded-lg">
+      <button onClick={onNext} className="zora-btn-primary mt-8 w-full flex items-center justify-center gap-2 text-base px-6 py-3.5">
         KI-Matching starten <ChevronRight size={18} />
       </button>
     </div>
@@ -1167,7 +1167,7 @@ function Screen2({
           <ChevronLeft size={20} />
         </button>
         <div>
-          <h2 className="text-2xl font-bold text-[#1a1a1a]">
+          <h2 className="text-2xl font-bold" style={{ color: "#0D1F1B", fontFamily: "'Bricolage Grotesque', sans-serif" }}>
             {sorted.length} passende Förderungen gefunden
           </h2>
           <p className="text-sm text-[#6b7280] mt-0.5">
@@ -1293,14 +1293,14 @@ function Screen2({
                       {wizardRoute ? (
                         <Link
                           href={wizardRoute}
-                          className="inline-flex items-center gap-1 text-xs font-semibold text-white bg-[#1D9E75] hover:bg-[#0F6E56] transition-colors px-3 py-1.5 rounded-lg"
+                          className="zora-btn-primary inline-flex items-center gap-1 text-xs px-3 py-1.5"
                         >
                           Antrag starten <ArrowRight size={11} />
                         </Link>
                       ) : (
                         <button
                           onClick={onNext}
-                          className="inline-flex items-center gap-1 text-xs font-semibold text-white bg-[#1D9E75] hover:bg-[#0F6E56] transition-colors px-3 py-1.5 rounded-lg"
+                          className="zora-btn-primary inline-flex items-center gap-1 text-xs px-3 py-1.5"
                         >
                           Antrag starten <ArrowRight size={11} />
                         </button>
@@ -1410,14 +1410,14 @@ function Screen2({
                         {wizardRoute ? (
                           <Link
                             href={wizardRoute}
-                            className="inline-flex items-center gap-1.5 text-sm font-semibold text-white bg-[#1D9E75] hover:bg-[#0F6E56] transition-colors px-4 py-2 rounded-lg"
+                            className="zora-btn-primary inline-flex items-center gap-1.5 text-sm px-4 py-2"
                           >
                             Jetzt Antrag starten <ArrowRight size={14} />
                           </Link>
                         ) : (
                           <button
                             onClick={onNext}
-                            className="inline-flex items-center gap-1.5 text-sm font-semibold text-white bg-[#1D9E75] hover:bg-[#0F6E56] transition-colors px-4 py-2 rounded-lg"
+                            className="zora-btn-primary inline-flex items-center gap-1.5 text-sm px-4 py-2"
                           >
                             Jetzt Antrag starten <ArrowRight size={14} />
                           </button>
@@ -1443,7 +1443,7 @@ function Screen2({
 
       <button
         onClick={onNext}
-        className="w-full flex items-center justify-center gap-2 text-base font-semibold text-white bg-[#1D9E75] hover:bg-[#0F6E56] transition-colors px-6 py-3.5 rounded-lg"
+        className="zora-btn-primary w-full flex items-center justify-center gap-2 text-base px-6 py-3.5"
       >
         Zu Partner & Antrag <ChevronRight size={18} />
       </button>
@@ -1628,7 +1628,7 @@ function ContactModal({ info, onClose }: { info: ContactModalInfo; onClose: () =
           </button>
           <button
             onClick={onClose}
-            className="flex-1 text-sm font-semibold text-white bg-[#1D9E75] hover:bg-[#0F6E56] rounded-xl py-2.5 transition-colors"
+            className="zora-btn-primary flex-1 text-sm py-2.5 rounded-xl"
           >
             Schließen
           </button>
@@ -1660,7 +1660,7 @@ function Screen3({ programmes, onBack, onNext, onSkip }: {
             <ChevronLeft size={20} />
           </button>
           <div>
-            <h2 className="text-2xl font-bold text-[#1a1a1a]">Diese Partner brauchst du</h2>
+            <h2 className="text-2xl font-bold" style={{ color: "#0D1F1B", fontFamily: "'Bricolage Grotesque', sans-serif" }}>Diese Partner brauchst du</h2>
             <p className="text-sm text-[#6b7280] mt-0.5">
               Manche Förderprogramme schreiben bestimmte Fachleute vor — ohne sie wird der Antrag abgelehnt.
             </p>
@@ -1742,7 +1742,7 @@ function Screen3({ programmes, onBack, onNext, onSkip }: {
           </button>
           <button
             onClick={onNext}
-            className="flex-1 flex items-center justify-center gap-2 text-sm font-semibold text-white bg-[#1D9E75] hover:bg-[#0F6E56] transition-colors px-4 py-3 rounded-xl"
+            className="zora-btn-primary flex-1 flex items-center justify-center gap-2 text-sm px-4 py-3 rounded-xl"
           >
             Weiter zum Antrag <ChevronRight size={16} />
           </button>
@@ -1767,7 +1767,7 @@ function Screen5({ selectedIds, programmes, onRestart }: { selectedIds: string[]
       <div className="w-20 h-20 rounded-full bg-[#E1F5EE] flex items-center justify-center mx-auto mb-6">
         <CheckCircle size={40} className="text-[#1D9E75]" />
       </div>
-      <h2 className="text-2xl font-bold text-[#1a1a1a] mb-3">Antrag erfolgreich exportiert!</h2>
+      <h2 className="text-2xl font-bold mb-3" style={{ color: "#0D1F1B", fontFamily: "'Bricolage Grotesque', sans-serif" }}>Antrag erfolgreich exportiert!</h2>
       <p className="text-[#6b7280] mb-8 max-w-md mx-auto">
         Dein PDF wurde erstellt. Reiche ihn direkt bei {progs.map((p) => p.foerdergeber).join(" und ")} ein.
       </p>
@@ -1786,7 +1786,7 @@ function Screen5({ selectedIds, programmes, onRestart }: { selectedIds: string[]
         <button onClick={onRestart} className="flex items-center justify-center gap-2 text-sm font-semibold text-[#6b7280] border border-[#e5e7eb] hover:border-[#1D9E75]/40 transition-colors px-5 py-2.5 rounded-lg">
           <RotateCcw size={16} /> Neue Suche
         </button>
-        <a href="/app/antraege" className="flex items-center justify-center gap-2 text-sm font-semibold text-white bg-[#1D9E75] hover:bg-[#0F6E56] transition-colors px-5 py-2.5 rounded-lg">
+        <a href="/app/antraege" className="zora-btn-primary flex items-center justify-center gap-2 text-sm px-5 py-2.5">
           Zum Antrags-Tracking <ArrowRight size={16} />
         </a>
       </div>

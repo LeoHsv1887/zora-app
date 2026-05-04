@@ -568,7 +568,7 @@ function SummaryStep({
         type="button"
         onClick={onExport}
         disabled={isExporting || isGenerating}
-        className="w-full h-13 py-3.5 rounded-xl bg-[#1D9E75] hover:bg-[#0F6E56] disabled:bg-[#e5e7eb] disabled:text-[#9ca3af] text-white font-semibold text-base transition-all flex items-center justify-center gap-3"
+        className="zora-btn-primary w-full py-3.5 rounded-xl text-base flex items-center justify-center gap-3 disabled:bg-[#E2EAE8] disabled:text-[#6B7F7A] disabled:shadow-none disabled:translate-y-0"
       >
         {isExporting ? (
           <>
@@ -920,9 +920,9 @@ export default function AntragWizard({ config }: AntragWizardProps) {
     currentStep?.berechnungFn ? currentStep.berechnungFn(values) : [];
 
   return (
-    <div className="min-h-screen bg-[#f9fafb]">
+    <div className="min-h-screen" style={{ background: "#F8FAFB" }}>
       {/* Header */}
-      <div className="bg-white border-b border-[#e5e7eb] sticky top-0 z-10">
+      <div className="bg-white sticky top-0 z-10" style={{ borderBottom: "1px solid #E2EAE8" }}>
         <div className="max-w-2xl mx-auto px-4 py-4">
           {/* Top row: back link + title */}
           <div className="flex items-center gap-3 mb-3">
@@ -1044,7 +1044,8 @@ export default function AntragWizard({ config }: AntragWizardProps) {
                   <button
                     type="button"
                     onClick={goBack}
-                    className="flex-1 h-11 rounded-xl border border-[#e5e7eb] bg-white text-[#1a1a1a] text-sm font-medium hover:bg-[#f9fafb] transition-colors flex items-center justify-center gap-2"
+                    className="flex-1 h-11 rounded-xl text-sm font-medium transition-colors flex items-center justify-center gap-2 hover:bg-[#F1F5F4]"
+                    style={{ border: "1px solid #E2EAE8", background: "white", color: "#0D1F1B" }}
                   >
                     <svg
                       className="w-4 h-4"
@@ -1065,7 +1066,7 @@ export default function AntragWizard({ config }: AntragWizardProps) {
                 <button
                   type="button"
                   onClick={goNext}
-                  className="flex-[2] h-11 rounded-xl bg-[#1D9E75] text-white text-sm font-semibold hover:bg-[#0F6E56] transition-colors flex items-center justify-center gap-2"
+                  className="zora-btn-primary flex-[2] h-11 rounded-xl text-sm flex items-center justify-center gap-2"
                 >
                   {stepIndex === totalSteps - 2
                     ? "Zusammenfassung anzeigen"
@@ -1095,7 +1096,8 @@ export default function AntragWizard({ config }: AntragWizardProps) {
                 <button
                   type="button"
                   onClick={goBack}
-                  className="w-full h-11 rounded-xl border border-[#e5e7eb] bg-white text-[#1a1a1a] text-sm font-medium hover:bg-[#f9fafb] transition-colors flex items-center justify-center gap-2"
+                  className="w-full h-11 rounded-xl text-sm font-medium transition-colors flex items-center justify-center gap-2 hover:bg-[#F1F5F4]"
+                  style={{ border: "1px solid #E2EAE8", background: "white", color: "#0D1F1B" }}
                 >
                   <svg
                     className="w-4 h-4"

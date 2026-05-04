@@ -75,8 +75,8 @@ body {
 
 /* ── Form controls ──────────────────────────────────────────────────────── */
 .zora-input {
-  height: 42px;
-  border: 1px solid #e5e7eb;
+  height: 44px;
+  border: 1px solid #E2EAE8;
   border-radius: 8px;
   padding: 0 12px;
   font-size: 14px;
@@ -101,11 +101,11 @@ select.zora-input {
 
 .zora-input:focus {
   border-color: #1D9E75;
-  box-shadow: 0 0 0 3px rgba(29, 158, 117, 0.15);
+  box-shadow: 0 0 0 3px rgba(29, 158, 117, 0.1);
 }
 
 .zora-textarea {
-  border: 1px solid #e5e7eb;
+  border: 1px solid #E2EAE8;
   border-radius: 8px;
   padding: 10px 12px;
   font-size: 14px;
@@ -138,6 +138,36 @@ select.zora-input {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #9ca3af;
+}
+
+/* ── Design-system utility classes ─────────────────────────────────────── */
+.zora-btn-primary {
+  background: linear-gradient(135deg, #1D9E75, #2ECC9A);
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 16px rgba(29, 158, 117, 0.25);
+}
+.zora-btn-primary:hover:not(:disabled) {
+  box-shadow: 0 8px 32px rgba(29, 158, 117, 0.35);
+  transform: translateY(-1px);
+}
+.zora-btn-primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.zora-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #E2EAE8;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+}
+.zora-card:hover {
+  box-shadow: 0 8px 32px rgba(29, 158, 117, 0.12);
+  transform: translateY(-2px);
 }
 
 /* ── Progress bar ───────────────────────────────────────────────────────── */

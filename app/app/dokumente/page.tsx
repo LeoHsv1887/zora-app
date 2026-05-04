@@ -49,8 +49,8 @@ export default function DokumentePage() {
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-[#1a1a1a] mb-1">Deine Unterlagen & Nachweise</h2>
-        <p className="text-[#6b7280] text-sm">{DOKUMENTE.length} Dokumente · alle sicher gespeichert</p>
+        <h2 className="text-2xl font-bold mb-1" style={{ color: "#0D1F1B", fontFamily: "'Bricolage Grotesque', sans-serif" }}>Deine Unterlagen & Nachweise</h2>
+        <p className="text-sm" style={{ color: "#6B7F7A" }}>{DOKUMENTE.length} Dokumente · alle sicher gespeichert</p>
       </div>
 
       {/* Upload zone */}
@@ -58,7 +58,11 @@ export default function DokumentePage() {
         onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
         onDragLeave={() => setDragging(false)}
         onDrop={(e) => { e.preventDefault(); setDragging(false); }}
-        className={`border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer ${dragging ? "border-[#1D9E75] bg-[#E1F5EE]" : "border-[#e5e7eb] bg-white hover:border-[#1D9E75]/40 hover:bg-[#f9fafb]"}`}
+        className="rounded-xl p-8 text-center transition-all cursor-pointer"
+        style={{
+          border: dragging ? "2px dashed #1D9E75" : "2px dashed #E2EAE8",
+          background: dragging ? "#E1F5EE" : "white",
+        }}
       >
         <Upload size={28} className={`mx-auto mb-3 ${dragging ? "text-[#1D9E75]" : "text-[#9ca3af]"}`} />
         <p className="font-semibold text-[#1a1a1a] mb-1">Dokument hier ablegen oder klicken</p>
@@ -67,8 +71,8 @@ export default function DokumentePage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Kategorien sidebar */}
-        <div className="bg-white rounded-xl border border-[#e5e7eb] p-4 h-fit">
-          <h3 className="text-xs font-semibold text-[#9ca3af] uppercase tracking-wide mb-3">Kategorien</h3>
+        <div className="bg-white rounded-xl p-4 h-fit" style={{ border: "1px solid #E2EAE8", boxShadow: "0 4px 16px rgba(0,0,0,0.06)" }}>
+          <h3 className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: "#6B7F7A" }}>Kategorien</h3>
           <div className="space-y-0.5">
             {KATEGORIEN.map((k) => (
               <button
@@ -90,8 +94,8 @@ export default function DokumentePage() {
 
         {/* Document list */}
         <div className="lg:col-span-3">
-          <div className="bg-white rounded-xl border border-[#e5e7eb] overflow-hidden">
-            <div className="hidden md:grid grid-cols-[2fr_1fr_1fr_1fr_auto] gap-4 px-6 py-3 bg-[#f9fafb] border-b border-[#e5e7eb] text-xs font-semibold text-[#9ca3af] uppercase tracking-wide">
+          <div className="bg-white rounded-xl overflow-hidden" style={{ border: "1px solid #E2EAE8", boxShadow: "0 4px 16px rgba(0,0,0,0.06)" }}>
+            <div className="hidden md:grid grid-cols-[2fr_1fr_1fr_1fr_auto] gap-4 px-6 py-3 border-b text-xs font-semibold uppercase tracking-wide" style={{ background: "#F8FAFB", borderColor: "#E2EAE8", color: "#6B7F7A" }}>
               <span>Dateiname</span>
               <span>Typ</span>
               <span>Antrag</span>

@@ -181,8 +181,8 @@ export default function DashboardPage() {
     <motion.div initial="hidden" animate="visible" variants={stagger} className="max-w-6xl mx-auto space-y-6">
       {/* Greeting */}
       <motion.div variants={fadeUp}>
-        <h2 className="text-2xl font-bold text-[#1a1a1a]">{getGreeting()}, Leonard! 👋</h2>
-        <p className="text-[#6b7280] mt-1">
+        <h2 className="text-2xl font-bold" style={{ color: "#0D1F1B", fontFamily: "'Bricolage Grotesque', sans-serif" }}>{getGreeting()}, Leonard! 👋</h2>
+        <p className="mt-1" style={{ color: "#6B7F7A" }}>
           {getTodayFormatted()} &middot; Du hast{" "}
           <span className="text-[#f59e0b] font-semibold">2 offene Anträge</span> und{" "}
           <span className="text-[#1D9E75] font-semibold">3 neue Fördermöglichkeiten</span>.
@@ -192,23 +192,26 @@ export default function DashboardPage() {
       {/* KPIs */}
       <motion.div variants={stagger} className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: "Potenzielle Förderung", value: 47500, prefix: "", suffix: " €", color: "text-[#1D9E75]", icon: TrendingUp, iconBg: "bg-[#E1F5EE]", iconColor: "text-[#1D9E75]" },
-          { label: "Aktive Anträge", value: 2, prefix: "", suffix: "", color: "text-[#1a1a1a]", icon: FileText, iconBg: "bg-blue-50", iconColor: "text-blue-500" },
-          { label: "Bewilligte Anträge", value: 1, prefix: "", suffix: "", color: "text-[#1a1a1a]", icon: CheckCircle, iconBg: "bg-green-50", iconColor: "text-green-500" },
-          { label: "Gesparte Honorare", value: 3200, prefix: "~", suffix: " €", color: "text-[#1a1a1a]", icon: TrendingUp, iconBg: "bg-amber-50", iconColor: "text-amber-500" },
+          { label: "Potenzielle Förderung", value: 47500, prefix: "", suffix: " €", numColor: "#0F6E56", icon: TrendingUp, iconBg: "bg-[#E1F5EE]", iconColor: "text-[#1D9E75]" },
+          { label: "Aktive Anträge", value: 2, prefix: "", suffix: "", numColor: "#0D1F1B", icon: FileText, iconBg: "bg-blue-50", iconColor: "text-blue-500" },
+          { label: "Bewilligte Anträge", value: 1, prefix: "", suffix: "", numColor: "#0D1F1B", icon: CheckCircle, iconBg: "bg-[#E1F5EE]", iconColor: "text-[#1D9E75]" },
+          { label: "Gesparte Honorare", value: 3200, prefix: "~", suffix: " €", numColor: "#0D1F1B", icon: TrendingUp, iconBg: "bg-amber-50", iconColor: "text-amber-500" },
         ].map((kpi) => (
           <motion.div
             key={kpi.label}
             variants={fadeUp}
-            className="bg-white rounded-xl border border-[#e5e7eb] p-5 hover:shadow-sm transition-shadow"
+            className="bg-white rounded-xl p-5 transition-all duration-200 cursor-default"
+            style={{ border: "1px solid #E2EAE8", boxShadow: "0 4px 16px rgba(0,0,0,0.06)" }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.boxShadow = "0 8px 32px rgba(29,158,117,0.12)"; (e.currentTarget as HTMLDivElement).style.transform = "translateY(-2px)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.boxShadow = "0 4px 16px rgba(0,0,0,0.06)"; (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)"; }}
           >
             <div className="flex items-start justify-between mb-3">
-              <p className="text-xs text-[#6b7280] font-medium">{kpi.label}</p>
+              <p className="text-[13px] font-medium" style={{ color: "#6B7F7A" }}>{kpi.label}</p>
               <div className={`w-8 h-8 rounded-lg ${kpi.iconBg} flex items-center justify-center`}>
                 <kpi.icon size={15} className={kpi.iconColor} />
               </div>
             </div>
-            <p className={`text-2xl font-bold ${kpi.color}`}>
+            <p className="text-[28px] font-bold" style={{ color: kpi.numColor, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
               <AnimatedNumber target={kpi.value} prefix={kpi.prefix} suffix={kpi.suffix} />
             </p>
           </motion.div>
@@ -219,7 +222,10 @@ export default function DashboardPage() {
       <motion.div variants={fadeUp}>
         <Link
           href="/app/foerderungen/suche"
-          className="flex items-center gap-3 bg-white border border-[#e5e7eb] hover:border-[#1D9E75]/40 hover:shadow-sm rounded-xl px-5 py-3.5 transition-all group"
+          className="flex items-center gap-3 bg-white rounded-xl px-5 py-3.5 transition-all group"
+          style={{ border: "1px solid #E2EAE8", boxShadow: "0 4px 16px rgba(0,0,0,0.06)" }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 8px 32px rgba(29,158,117,0.12)"; (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)"; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 4px 16px rgba(0,0,0,0.06)"; (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)"; }}
         >
           <div className="w-8 h-8 rounded-lg bg-[#E1F5EE] flex items-center justify-center flex-shrink-0 group-hover:bg-[#1D9E75]/10 transition-colors">
             <svg className="w-4 h-4 text-[#1D9E75]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -241,35 +247,42 @@ export default function DashboardPage() {
       {/* Two col */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Anträge */}
-        <motion.div variants={fadeUp} className="lg:col-span-2 bg-white rounded-xl border border-[#e5e7eb] overflow-hidden">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-[#e5e7eb]">
-            <h3 className="font-semibold text-[#1a1a1a]">Meine Anträge</h3>
+        <motion.div variants={fadeUp} className="lg:col-span-2 bg-white rounded-xl overflow-hidden" style={{ border: "1px solid #E2EAE8", boxShadow: "0 4px 16px rgba(0,0,0,0.06)" }}>
+          <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: "1px solid #E2EAE8" }}>
+            <h3 className="font-bold text-[#0D1F1B]" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>Meine Anträge</h3>
             <Link href="/app/antraege" className="text-xs text-[#1D9E75] font-medium hover:underline flex items-center gap-1">
               Alle anzeigen <ChevronRight size={12} />
             </Link>
           </div>
-          <div className="divide-y divide-[#f3f4f6]">
+          <div className="divide-y" style={{ borderColor: "#F1F5F4" }}>
             {ANTRAEGE.map((a) => (
               <div key={a.id} className="px-6 py-4">
                 <div className="flex items-start justify-between mb-2">
                   <div>
-                    <p className="text-sm font-semibold text-[#1a1a1a]">{a.name}</p>
-                    <p className="text-xs text-[#6b7280] mt-0.5">
+                    <p className="text-sm font-semibold" style={{ color: "#0D1F1B" }}>{a.name}</p>
+                    <p className="text-xs mt-0.5" style={{ color: "#6B7F7A" }}>
                       {a.eingereicht !== "–" ? `Eingereicht: ${a.eingereicht}` : "Noch nicht eingereicht"}
                       {a.frist !== "–" && ` · Frist: ${a.frist}`}
                     </p>
                   </div>
                   <div className="flex items-center gap-3 ml-4 flex-shrink-0">
-                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${a.statusColor}`}>
+                    <span className="text-xs font-semibold px-2.5 py-1 rounded-full" style={
+                      a.status === "Bewilligt" ? { background: "#E1F5EE", color: "#0F6E56" } :
+                      a.status === "In Bearbeitung" ? { background: "#FAEEDA", color: "#854F0B" } :
+                      { background: "#F1F5F4", color: "#6B7F7A" }
+                    }>
                       {a.status}
                     </span>
-                    <span className="text-sm font-bold text-[#1a1a1a]">{a.betrag}</span>
+                    <span className="text-sm font-bold" style={{ color: "#0D1F1B" }}>{a.betrag}</span>
                   </div>
                 </div>
-                <div className="h-1.5 bg-[#f3f4f6] rounded-full overflow-hidden">
+                <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "#F1F5F4" }}>
                   <div
-                    className={`h-full rounded-full transition-all ${a.fortschritt === 100 ? "bg-[#1D9E75]" : a.fortschritt >= 50 ? "bg-amber-400" : "bg-gray-300"}`}
-                    style={{ width: `${a.fortschritt}%` }}
+                    className="h-full rounded-full transition-all"
+                    style={{
+                      width: `${a.fortschritt}%`,
+                      background: a.fortschritt === 100 ? "linear-gradient(90deg, #1D9E75, #2ECC9A)" : a.fortschritt >= 50 ? "#F59E0B" : "#D1D5DB",
+                    }}
                   />
                 </div>
               </div>
@@ -278,9 +291,9 @@ export default function DashboardPage() {
         </motion.div>
 
         {/* Tasks */}
-        <motion.div variants={fadeUp} className="bg-white rounded-xl border border-[#e5e7eb] overflow-hidden">
-          <div className="px-5 py-4 border-b border-[#e5e7eb]">
-            <h3 className="font-semibold text-[#1a1a1a]">Nächste Schritte</h3>
+        <motion.div variants={fadeUp} className="bg-white rounded-xl overflow-hidden" style={{ border: "1px solid #E2EAE8", boxShadow: "0 4px 16px rgba(0,0,0,0.06)" }}>
+          <div className="px-5 py-4" style={{ borderBottom: "1px solid #E2EAE8" }}>
+            <h3 className="font-bold" style={{ color: "#0D1F1B", fontFamily: "'Bricolage Grotesque', sans-serif" }}>Nächste Schritte</h3>
           </div>
           <div className="px-5 py-3 space-y-1">
             {tasks.map((task) => (
@@ -307,25 +320,25 @@ export default function DashboardPage() {
 
       {/* Wizard Drafts */}
       {wizardDrafts.length > 0 && (
-        <motion.div variants={fadeUp} className="bg-white rounded-xl border border-[#e5e7eb] overflow-hidden">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-[#e5e7eb]">
+        <motion.div variants={fadeUp} className="bg-white rounded-xl overflow-hidden" style={{ border: "1px solid #E2EAE8", boxShadow: "0 4px 16px rgba(0,0,0,0.06)" }}>
+          <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: "1px solid #E2EAE8" }}>
             <div className="flex items-center gap-2">
               <PenLine size={16} className="text-[#1D9E75]" />
-              <h3 className="font-semibold text-[#1a1a1a]">Angefangene Anträge</h3>
+              <h3 className="font-bold" style={{ color: "#0D1F1B", fontFamily: "'Bricolage Grotesque', sans-serif" }}>Angefangene Anträge</h3>
             </div>
-            <span className="text-xs text-[#6b7280]">{wizardDrafts.length} Entwurf{wizardDrafts.length !== 1 ? "e" : ""}</span>
+            <span className="text-xs" style={{ color: "#6B7F7A" }}>{wizardDrafts.length} Entwurf{wizardDrafts.length !== 1 ? "e" : ""}</span>
           </div>
-          <div className="divide-y divide-[#f3f4f6]">
+          <div className="divide-y" style={{ borderColor: "#F1F5F4" }}>
             {wizardDrafts.map((draft) => (
               <div key={draft.programmId} className="px-6 py-4 flex items-center justify-between gap-4">
                 <div>
-                  <p className="text-sm font-semibold text-[#1a1a1a]">{draft.programmName}</p>
-                  <p className="text-xs text-[#9ca3af] mt-0.5">
+                  <p className="text-sm font-semibold" style={{ color: "#0D1F1B" }}>{draft.programmName}</p>
+                  <p className="text-xs mt-0.5" style={{ color: "#6B7F7A" }}>
                     {draft.stepCount} Felder ausgefüllt &middot; Zuletzt geändert {new Date(draft.updatedAt).toLocaleDateString("de-DE")}
                   </p>
                 </div>
                 <div className="flex items-center gap-3 flex-shrink-0">
-                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-gray-100 text-gray-600">Entwurf</span>
+                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full" style={{ background: "#F1F5F4", color: "#6B7F7A" }}>Entwurf</span>
                   <Link
                     href={`/app/antrag/${draft.programmId}`}
                     className="text-xs font-semibold text-[#1D9E75] hover:text-[#0F6E56] flex items-center gap-1 transition-colors"
@@ -340,38 +353,38 @@ export default function DashboardPage() {
       )}
 
       {/* Gespeicherte Förderungen */}
-      <motion.div variants={fadeUp} className="bg-white rounded-xl border border-[#e5e7eb] overflow-hidden">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[#e5e7eb]">
+      <motion.div variants={fadeUp} className="bg-white rounded-xl overflow-hidden" style={{ border: "1px solid #E2EAE8", boxShadow: "0 4px 16px rgba(0,0,0,0.06)" }}>
+        <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: "1px solid #E2EAE8" }}>
           <div className="flex items-center gap-2">
             <Bookmark size={16} className="text-[#1D9E75]" />
-            <h3 className="font-semibold text-[#1a1a1a]">Gespeicherte Förderungen</h3>
+            <h3 className="font-bold" style={{ color: "#0D1F1B", fontFamily: "'Bricolage Grotesque', sans-serif" }}>Gespeicherte Förderungen</h3>
           </div>
-          <span className="text-xs text-[#6b7280]">{savedPrograms.length} gespeichert</span>
+          <span className="text-xs" style={{ color: "#6B7F7A" }}>{savedPrograms.length} gespeichert</span>
         </div>
         {savedPrograms.length === 0 ? (
           <div className="px-6 py-8 text-center">
-            <p className="text-sm text-[#9ca3af]">Noch keine Förderungen gespeichert</p>
+            <p className="text-sm" style={{ color: "#6B7F7A" }}>Noch keine Förderungen gespeichert</p>
             <Link href="/app/foerderungen" className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-[#1D9E75] hover:underline">
               Jetzt Suche starten <ArrowRight size={11} />
             </Link>
           </div>
         ) : (
-          <div className="divide-y divide-[#f3f4f6]">
+          <div className="divide-y" style={{ borderColor: "#F1F5F4" }}>
             {savedPrograms.map((prog) => {
-              const badgeColors: Record<string, string> = {
-                Zuschuss: "bg-[#E1F5EE] text-[#0F6E56]",
-                Kredit: "bg-[#E6F1FB] text-[#185FA5]",
+              const badgeStyles: Record<string, React.CSSProperties> = {
+                Zuschuss: { background: "#E1F5EE", color: "#0F6E56" },
+                Kredit: { background: "#E6F1FB", color: "#185FA5" },
               };
-              const badgeClass = badgeColors[prog.badge] ?? "bg-gray-100 text-gray-600";
+              const badgeStyle = badgeStyles[prog.badge] ?? { background: "#F1F5F4", color: "#6B7F7A" };
               const wizardRoute = WIZARD_ROUTES[prog.id];
               return (
                 <div key={prog.id} className="px-6 py-4 flex items-center justify-between gap-4">
                   <div>
                     <div className="flex items-center gap-2 mb-0.5">
-                      <p className="text-sm font-semibold text-[#1a1a1a]">{prog.name}</p>
-                      <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${badgeClass}`}>{prog.badge}</span>
+                      <p className="text-sm font-semibold" style={{ color: "#0D1F1B" }}>{prog.name}</p>
+                      <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={badgeStyle}>{prog.badge}</span>
                     </div>
-                    <p className="text-xs text-[#9ca3af]">{prog.foerdergeber} · Max. {prog.maxBetrag}</p>
+                    <p className="text-xs" style={{ color: "#6B7F7A" }}>{prog.foerdergeber} · Max. {prog.maxBetrag}</p>
                   </div>
                   {wizardRoute ? (
                     <Link
@@ -396,11 +409,11 @@ export default function DashboardPage() {
       </motion.div>
 
       {/* Empfehlungen */}
-      <motion.div variants={fadeUp} className="bg-white rounded-xl border border-[#e5e7eb] overflow-hidden">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[#e5e7eb]">
+      <motion.div variants={fadeUp} className="bg-white rounded-xl overflow-hidden" style={{ border: "1px solid #E2EAE8", boxShadow: "0 4px 16px rgba(0,0,0,0.06)" }}>
+        <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: "1px solid #E2EAE8" }}>
           <div>
-            <h3 className="font-semibold text-[#1a1a1a]">Empfohlene Förderungen</h3>
-            <p className="text-xs text-[#6b7280] mt-0.5">Basierend auf deinem Profil</p>
+            <h3 className="font-bold" style={{ color: "#0D1F1B", fontFamily: "'Bricolage Grotesque', sans-serif" }}>Empfohlene Förderungen</h3>
+            <p className="text-xs mt-0.5" style={{ color: "#6B7F7A" }}>Basierend auf deinem Profil</p>
           </div>
           <Link href="/app/foerderungen" className="text-xs text-[#1D9E75] font-medium hover:underline flex items-center gap-1">
             Alle finden <ChevronRight size={12} />
@@ -409,17 +422,20 @@ export default function DashboardPage() {
         <div className="p-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
             {EMPFEHLUNGEN.map((p) => (
-              <div key={p.id} className="border border-[#e5e7eb] rounded-xl p-4 hover:border-[#1D9E75]/40 hover:shadow-sm transition-all">
+              <div key={p.id} className="rounded-xl p-4 transition-all duration-200" style={{ border: "1px solid #E2EAE8", boxShadow: "0 4px 16px rgba(0,0,0,0.06)" }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.boxShadow = "0 8px 32px rgba(29,158,117,0.12)"; (e.currentTarget as HTMLDivElement).style.transform = "translateY(-2px)"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.boxShadow = "0 4px 16px rgba(0,0,0,0.06)"; (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)"; }}
+              >
                 <div className="flex items-start justify-between mb-3">
-                  <span className="text-xs font-semibold text-[#6b7280] bg-[#f3f4f6] px-2 py-0.5 rounded-full">
+                  <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{ background: "#F1F5F4", color: "#6B7F7A" }}>
                     {p.badge}
                   </span>
                   <span className="text-xs font-bold text-[#1D9E75]">{p.passung}%</span>
                 </div>
-                <p className="text-sm font-semibold text-[#1a1a1a] mb-1 leading-tight">{p.name}</p>
-                <p className="text-sm text-[#6b7280] mb-4">{p.betrag}</p>
-                <div className="h-1 bg-[#f3f4f6] rounded-full mb-3">
-                  <div className="h-full bg-[#1D9E75] rounded-full" style={{ width: `${p.passung}%` }} />
+                <p className="text-sm font-semibold mb-1 leading-tight" style={{ color: "#0D1F1B" }}>{p.name}</p>
+                <p className="text-sm mb-4" style={{ color: "#6B7F7A" }}>{p.betrag}</p>
+                <div className="h-1 rounded-full mb-3" style={{ background: "#F1F5F4" }}>
+                  <div className="h-full rounded-full" style={{ width: `${p.passung}%`, background: "linear-gradient(90deg, #1D9E75, #2ECC9A)" }} />
                 </div>
                 <Link
                   href="/app/foerderungen"

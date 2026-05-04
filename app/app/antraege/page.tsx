@@ -104,11 +104,11 @@ const ANTRAEGE: Antrag[] = [
   },
 ];
 
-const STATUS_COLORS: Record<Status, string> = {
-  "In Bearbeitung": "bg-amber-100 text-amber-700",
-  Bewilligt: "bg-green-100 text-green-700",
-  Abgelehnt: "bg-red-100 text-red-700",
-  Entwurf: "bg-gray-100 text-gray-600",
+const STATUS_STYLES: Record<Status, React.CSSProperties> = {
+  "In Bearbeitung": { background: "#FAEEDA", color: "#854F0B" },
+  Bewilligt: { background: "#E1F5EE", color: "#0F6E56" },
+  Abgelehnt: { background: "#FEE2E2", color: "#991B1B" },
+  Entwurf: { background: "#F1F5F4", color: "#6B7F7A" },
 };
 
 const TABS: { key: "alle" | Status; label: string }[] = [
@@ -128,17 +128,18 @@ export default function AntraegePage() {
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-[#1a1a1a] mb-1">Deine Anträge & ihr Status</h2>
-        <p className="text-[#6b7280] text-sm">{ANTRAEGE.length} Anträge gesamt · {ANTRAEGE.filter((a) => a.status === "Bewilligt").length} bewilligt</p>
+        <h2 className="text-2xl font-bold mb-1" style={{ color: "#0D1F1B", fontFamily: "'Bricolage Grotesque', sans-serif" }}>Deine Anträge & ihr Status</h2>
+        <p className="text-sm" style={{ color: "#6B7F7A" }}>{ANTRAEGE.length} Anträge gesamt · {ANTRAEGE.filter((a) => a.status === "Bewilligt").length} bewilligt</p>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 p-1 bg-[#f3f4f6] rounded-lg w-fit">
+      <div className="flex gap-1 p-1 rounded-lg w-fit" style={{ background: "#F1F5F4" }}>
         {TABS.map((t) => (
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
-            className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all ${tab === t.key ? "bg-white text-[#1a1a1a] shadow-sm" : "text-[#6b7280] hover:text-[#1a1a1a]"}`}
+            className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all ${tab === t.key ? "bg-white shadow-sm" : "hover:text-[#0D1F1B]"}`}
+            style={{ color: tab === t.key ? "#0D1F1B" : "#6B7F7A" }}
           >
             {t.label}
           </button>
@@ -146,8 +147,8 @@ export default function AntraegePage() {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-xl border border-[#e5e7eb] overflow-hidden">
-        <div className="hidden md:grid grid-cols-[2fr_1fr_1fr_1fr_1fr_auto] gap-4 px-6 py-3 bg-[#f9fafb] border-b border-[#e5e7eb] text-xs font-semibold text-[#9ca3af] uppercase tracking-wide">
+      <div className="bg-white rounded-xl overflow-hidden" style={{ border: "1px solid #E2EAE8", boxShadow: "0 4px 16px rgba(0,0,0,0.06)" }}>
+        <div className="hidden md:grid grid-cols-[2fr_1fr_1fr_1fr_1fr_auto] gap-4 px-6 py-3 border-b text-xs font-semibold uppercase tracking-wide" style={{ background: "#F8FAFB", borderColor: "#E2EAE8", color: "#6B7F7A" }}>
           <span>Programm</span>
           <span>Betrag</span>
           <span>Status</span>
@@ -156,31 +157,31 @@ export default function AntraegePage() {
           <span>Aktionen</span>
         </div>
 
-        <div className="divide-y divide-[#f3f4f6]">
+        <div className="divide-y" style={{ borderColor: "#F1F5F4" }}>
           {filtered.map((a) => (
             <div key={a.id}>
               {/* Row */}
               <div className="px-6 py-4">
                 <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr_1fr_auto] gap-3 md:gap-4 items-center">
                   <div>
-                    <p className="font-semibold text-[#1a1a1a] text-sm">{a.programm}</p>
-                    <p className="text-xs text-[#9ca3af]">{a.foerderstelle}</p>
+                    <p className="font-semibold text-sm" style={{ color: "#0D1F1B" }}>{a.programm}</p>
+                    <p className="text-xs" style={{ color: "#6B7F7A" }}>{a.foerderstelle}</p>
                   </div>
-                  <span className="font-bold text-[#1a1a1a] text-sm">{a.betrag}</span>
-                  <span className={`inline-flex items-center text-xs font-semibold px-2.5 py-1 rounded-full w-fit ${STATUS_COLORS[a.status]}`}>
+                  <span className="font-bold text-sm" style={{ color: "#0D1F1B" }}>{a.betrag}</span>
+                  <span className="inline-flex items-center text-xs font-semibold px-2.5 py-1 rounded-full w-fit" style={STATUS_STYLES[a.status]}>
                     {a.status}
                   </span>
-                  <span className="text-sm text-[#6b7280]">{a.eingereicht}</span>
-                  <span className={`text-sm ${a.frist !== "–" && a.status !== "Bewilligt" ? "text-amber-600 font-medium" : "text-[#6b7280]"}`}>
+                  <span className="text-sm" style={{ color: "#6B7F7A" }}>{a.eingereicht}</span>
+                  <span className="text-sm" style={{ color: a.frist !== "–" && a.status !== "Bewilligt" ? "#854F0B" : "#6B7F7A", fontWeight: a.frist !== "–" && a.status !== "Bewilligt" ? 600 : 400 }}>
                     {a.frist}
                   </span>
                   <div className="flex items-center gap-2">
-                    <button className="p-1.5 rounded-lg hover:bg-[#f3f4f6] text-[#6b7280] hover:text-[#1D9E75] transition-colors" title="PDF herunterladen">
+                    <button className="p-1.5 rounded-lg text-[#6B7F7A] hover:text-[#1D9E75] transition-colors hover:bg-[#F1F5F4]" title="PDF herunterladen">
                       <Download size={15} />
                     </button>
                     <button
                       onClick={() => setExpanded(expanded === a.id ? null : a.id)}
-                      className="p-1.5 rounded-lg hover:bg-[#f3f4f6] text-[#6b7280] hover:text-[#1a1a1a] transition-colors"
+                      className="p-1.5 rounded-lg text-[#6B7F7A] hover:text-[#0D1F1B] transition-colors hover:bg-[#F1F5F4]"
                     >
                       {expanded === a.id ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
                     </button>
@@ -189,10 +190,13 @@ export default function AntraegePage() {
 
                 {/* Progress */}
                 {a.status !== "Abgelehnt" && (
-                  <div className="mt-3 h-1 bg-[#f3f4f6] rounded-full">
+                  <div className="mt-3 h-1 rounded-full" style={{ background: "#F1F5F4" }}>
                     <div
-                      className={`h-full rounded-full ${a.fortschritt === 100 ? "bg-[#1D9E75]" : "bg-amber-400"}`}
-                      style={{ width: `${a.fortschritt}%` }}
+                      className="h-full rounded-full"
+                      style={{
+                        width: `${a.fortschritt}%`,
+                        background: a.fortschritt === 100 ? "linear-gradient(90deg, #1D9E75, #2ECC9A)" : "#F59E0B",
+                      }}
                     />
                   </div>
                 )}
@@ -208,15 +212,15 @@ export default function AntraegePage() {
                     transition={{ duration: 0.2 }}
                     className="overflow-hidden"
                   >
-                    <div className="px-6 pb-6 bg-[#f9fafb] border-t border-[#f3f4f6]">
-                      <h4 className="text-sm font-semibold text-[#1a1a1a] mt-5 mb-4">Antragsverlauf</h4>
+                    <div className="px-6 pb-6 border-t" style={{ background: "#F8FAFB", borderColor: "#E2EAE8" }}>
+                      <h4 className="text-sm font-bold mt-5 mb-4" style={{ color: "#0D1F1B", fontFamily: "'Bricolage Grotesque', sans-serif" }}>Antragsverlauf</h4>
                       <div className="relative pl-5">
-                        <div className="absolute left-2 top-1 bottom-1 w-px bg-[#e5e7eb]" />
+                        <div className="absolute left-2 top-1 bottom-1 w-px" style={{ background: "#E2EAE8" }} />
                         {a.zeitstrahl.map((z, idx) => (
                           <div key={idx} className="relative mb-4 last:mb-0">
-                            <div className={`absolute -left-5 top-0.5 w-3.5 h-3.5 rounded-full border-2 ${z.done ? "bg-[#1D9E75] border-[#1D9E75]" : "bg-white border-[#d1d5db]"}`} />
-                            <p className={`text-sm font-medium ${z.done ? "text-[#1a1a1a]" : "text-[#9ca3af]"}`}>{z.label}</p>
-                            <p className="text-xs text-[#9ca3af]">{z.date}</p>
+                            <div className="absolute -left-5 top-0.5 w-3.5 h-3.5 rounded-full border-2" style={z.done ? { background: "#1D9E75", borderColor: "#1D9E75" } : { background: "white", borderColor: "#E2EAE8" }} />
+                            <p className="text-sm font-medium" style={{ color: z.done ? "#0D1F1B" : "#6B7F7A" }}>{z.label}</p>
+                            <p className="text-xs" style={{ color: "#6B7F7A" }}>{z.date}</p>
                           </div>
                         ))}
                       </div>

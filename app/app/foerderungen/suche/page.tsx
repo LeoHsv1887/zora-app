@@ -236,14 +236,14 @@ function KombinationsKarte({
         {wizardRoute ? (
           <Link
             href={wizardRoute}
-            className="w-full flex items-center justify-center gap-2 text-xs font-semibold text-white bg-[#1D9E75] hover:bg-[#0F6E56] transition-colors px-3 py-2 rounded-lg"
+            className="w-full flex items-center justify-center gap-2 text-xs font-semibold text-white zora-btn-primary px-3 py-2 rounded-lg"
           >
             Beide Programme beantragen <ArrowRight size={12} />
           </Link>
         ) : (
           <Link
             href="/app/foerderungen"
-            className="w-full flex items-center justify-center gap-2 text-xs font-semibold text-white bg-[#1D9E75] hover:bg-[#0F6E56] transition-colors px-3 py-2 rounded-lg"
+            className="w-full flex items-center justify-center gap-2 text-xs font-semibold text-white zora-btn-primary px-3 py-2 rounded-lg"
           >
             Beide Programme beantragen <ArrowRight size={12} />
           </Link>
@@ -366,7 +366,7 @@ function DetailView({
               {wizardRoute && (
                 <Link
                   href={wizardRoute}
-                  className="flex-1 flex items-center justify-center gap-2 text-sm font-semibold text-white bg-[#1D9E75] hover:bg-[#0F6E56] transition-colors px-5 py-2.5 rounded-xl"
+                  className="flex-1 flex items-center justify-center gap-2 text-sm font-semibold text-white zora-btn-primary px-5 py-2.5 rounded-xl"
                 >
                   Antrag starten <ArrowRight size={14} />
                 </Link>
@@ -565,7 +565,7 @@ export default function SuchePage() {
                 </button>
                 <Link
                   href="/app/foerderungen"
-                  className="flex items-center justify-center gap-1.5 text-sm font-semibold text-white bg-[#1D9E75] hover:bg-[#0F6E56] transition-colors px-5 py-2 rounded-lg"
+                  className="flex items-center justify-center gap-1.5 text-sm font-semibold text-white zora-btn-primary px-5 py-2 rounded-lg"
                 >
                   KI-Matching starten <ArrowRight size={14} />
                 </Link>

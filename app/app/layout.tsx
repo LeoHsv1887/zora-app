@@ -42,7 +42,7 @@ function Sidebar({ onClose }: { onClose?: () => void }) {
   const pathname = usePathname();
 
   return (
-    <div className="h-full flex flex-col" style={{ backgroundColor: "#0F6E56" }}>
+    <div className="h-full flex flex-col" style={{ backgroundColor: "#0A1F1A" }}>
       {/* Logo */}
       <div className="h-16 flex items-center px-5" style={{ borderBottom: "1px solid rgba(255,255,255,0.2)" }}>
         <ZoraLogo href="/" variant="light" onClick={onClose} />
@@ -68,26 +68,26 @@ function Sidebar({ onClose }: { onClose?: () => void }) {
                 onClick={onClose}
                 className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all"
                 style={{
-                  backgroundColor: active ? "rgba(255,255,255,0.15)" : "transparent",
-                  color: active ? "white" : "rgba(255,255,255,0.7)",
+                  backgroundColor: active ? "rgba(255,255,255,0.12)" : "transparent",
+                  color: active ? "white" : "rgba(255,255,255,0.65)",
                 }}
                 onMouseEnter={(e) => {
                   if (!active) {
-                    (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "rgba(255,255,255,0.10)";
+                    (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "rgba(255,255,255,0.08)";
                     (e.currentTarget as HTMLAnchorElement).style.color = "white";
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (!active) {
                     (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "transparent";
-                    (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.7)";
+                    (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.65)";
                   }
                 }}
               >
                 <item.icon size={18} className="text-white flex-shrink-0" />
                 <span className="flex-1">{item.label}</span>
                 {hasBadge && (
-                  <span className="text-[9px] font-bold bg-red-500 text-white px-1.5 py-0.5 rounded-full leading-none">
+                  <span className="text-[9px] font-bold text-white px-1.5 py-0.5 rounded-full leading-none" style={{ background: "linear-gradient(135deg, #1D9E75, #2ECC9A)" }}>
                     {item.badge}
                   </span>
                 )}
@@ -110,19 +110,19 @@ function Sidebar({ onClose }: { onClose?: () => void }) {
                         onClick={onClose}
                         className="block px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
                         style={{
-                          color: subActive ? "white" : "rgba(255,255,255,0.6)",
-                          backgroundColor: subActive ? "rgba(255,255,255,0.15)" : "transparent",
+                          color: subActive ? "white" : "rgba(255,255,255,0.55)",
+                          backgroundColor: subActive ? "rgba(255,255,255,0.12)" : "transparent",
                         }}
                         onMouseEnter={(e) => {
                           if (!subActive) {
-                            (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "rgba(255,255,255,0.10)";
+                            (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "rgba(255,255,255,0.08)";
                             (e.currentTarget as HTMLAnchorElement).style.color = "white";
                           }
                         }}
                         onMouseLeave={(e) => {
                           if (!subActive) {
                             (e.currentTarget as HTMLAnchorElement).style.backgroundColor = "transparent";
-                            (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.6)";
+                            (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.55)";
                           }
                         }}
                       >
@@ -138,24 +138,24 @@ function Sidebar({ onClose }: { onClose?: () => void }) {
       </nav>
 
       {/* User */}
-      <div className="px-4 py-4" style={{ borderTop: "1px solid rgba(255,255,255,0.2)" }}>
+      <div className="px-4 py-4" style={{ borderTop: "1px solid rgba(255,255,255,0.12)" }}>
         <div className="flex items-center gap-3">
           <div
             className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white flex-shrink-0"
-            style={{ backgroundColor: "rgba(255,255,255,0.2)" }}
+            style={{ background: "linear-gradient(135deg, #1D9E75, #2ECC9A)" }}
           >
             LV
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-semibold text-white truncate">Leonard V.</p>
             <span
-              className="inline-block text-[10px] font-semibold px-1.5 py-0.5 rounded-full"
-              style={{ backgroundColor: "#5DCAA5", color: "#0F6E56" }}
+              className="inline-block text-[10px] font-bold px-1.5 py-0.5 rounded-full text-white"
+              style={{ background: "linear-gradient(135deg, #1D9E75, #2ECC9A)" }}
             >
               Pro Plan
             </span>
           </div>
-          <ChevronRight size={14} style={{ color: "rgba(255,255,255,0.6)" }} />
+          <ChevronRight size={14} style={{ color: "rgba(255,255,255,0.4)" }} />
         </div>
       </div>
     </div>
@@ -167,20 +167,20 @@ function AppHeader({ title, subtitle }: { title: string; subtitle?: string }) {
 
   return (
     <>
-      <header className="h-16 bg-white border-b border-[#e5e7eb] flex items-center px-6 sticky top-0 z-30">
-        <button className="md:hidden mr-4 p-1 text-[#6b7280]" onClick={() => setMobileOpen(true)}>
+      <header className="h-16 bg-white border-b border-[#E2EAE8] flex items-center px-6 sticky top-0 z-30">
+        <button className="md:hidden mr-4 p-1 text-[#6B7F7A]" onClick={() => setMobileOpen(true)}>
           <Menu size={20} />
         </button>
         <div>
-          <h1 className="text-base font-semibold text-[#1a1a1a] leading-tight">{title}</h1>
-          {subtitle && <p className="text-xs text-[#9ca3af]">{subtitle}</p>}
+          <h1 className="text-base font-bold text-[#0D1F1B] leading-tight" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>{title}</h1>
+          {subtitle && <p className="text-xs" style={{ color: "#6B7F7A" }}>{subtitle}</p>}
         </div>
         <div className="ml-auto flex items-center gap-3">
-          <button className="relative p-2 rounded-lg hover:bg-[#f9fafb] text-[#6b7280] transition-colors">
+          <button className="relative p-2 rounded-lg hover:bg-[#F8FAFB] text-[#6B7F7A] transition-colors">
             <Bell size={18} />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#1D9E75] rounded-full" />
+            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full" style={{ background: "linear-gradient(135deg, #1D9E75, #2ECC9A)" }} />
           </button>
-          <div className="w-8 h-8 rounded-full bg-[#E1F5EE] flex items-center justify-center text-xs font-bold text-[#1D9E75]">
+          <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ background: "linear-gradient(135deg, #1D9E75, #2ECC9A)" }}>
             LV
           </div>
         </div>
@@ -209,14 +209,14 @@ function PageTitleResolver({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex flex-col flex-1 min-h-0">
       <AppHeader title={header.title} subtitle={header.subtitle} />
-      <main className="flex-1 overflow-auto bg-[#f9fafb] p-6">{children}</main>
+      <main className="flex-1 overflow-auto p-6" style={{ background: "#F8FAFB" }}>{children}</main>
     </div>
   );
 }
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex h-screen bg-[#f9fafb] overflow-hidden">
+    <div className="flex h-screen overflow-hidden" style={{ background: "#F8FAFB" }}>
       {/* Desktop Sidebar */}
       <aside className="hidden md:block w-60 flex-shrink-0 h-full">
         <Sidebar />

@@ -905,7 +905,7 @@ export default function Screen4Application({
               <button
                 onClick={handleExport}
                 disabled={isExporting}
-                className="w-full flex items-center justify-center gap-2 text-sm font-semibold text-white bg-[#1D9E75] hover:bg-[#0F6E56] transition-colors px-4 py-2.5 rounded-lg disabled:opacity-60"
+                className="zora-btn-primary w-full flex items-center justify-center gap-2 text-sm px-4 py-2.5 disabled:opacity-60 disabled:shadow-none disabled:translate-y-0"
               >
                 {isExporting ? <Loader2 size={15} className="animate-spin" /> : <Download size={15} />}
                 PDF herunterladen

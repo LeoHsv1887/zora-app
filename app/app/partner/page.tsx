@@ -28,12 +28,12 @@ export default function PartnerPage() {
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-[#1a1a1a] mb-1">Zertifizierte Partner in deiner Nähe</h2>
-        <p className="text-[#6b7280] text-sm">EEEs und Fachbetriebe für deine Förderung</p>
+        <h2 className="text-2xl font-bold mb-1" style={{ color: "#0D1F1B", fontFamily: "'Bricolage Grotesque', sans-serif" }}>Zertifizierte Partner in deiner Nähe</h2>
+        <p className="text-sm" style={{ color: "#6B7F7A" }}>EEEs und Fachbetriebe für deine Förderung</p>
       </div>
 
       {/* Search & Filter */}
-      <div className="bg-white rounded-xl border border-[#e5e7eb] p-5">
+      <div className="bg-white rounded-xl p-5" style={{ border: "1px solid #E2EAE8", boxShadow: "0 4px 16px rgba(0,0,0,0.06)" }}>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
             <label className="block text-xs font-semibold text-[#6b7280] mb-2">PLZ / Ort</label>
@@ -81,7 +81,10 @@ export default function PartnerPage() {
           </p>
 
           {filtered.map((p) => (
-            <div key={p.id} className="bg-white border border-[#e5e7eb] rounded-xl p-5 hover:border-[#1D9E75]/40 hover:shadow-sm transition-all">
+            <div key={p.id} className="bg-white rounded-xl p-5 transition-all duration-200" style={{ border: "1px solid #E2EAE8", boxShadow: "0 4px 16px rgba(0,0,0,0.06)" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.boxShadow = "0 8px 32px rgba(29,158,117,0.12)"; (e.currentTarget as HTMLDivElement).style.transform = "translateY(-2px)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.boxShadow = "0 4px 16px rgba(0,0,0,0.06)"; (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)"; }}
+            >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
@@ -118,7 +121,7 @@ export default function PartnerPage() {
                     <a href={`mailto:${p.email}`} className="flex items-center gap-1.5 text-xs text-[#6b7280] hover:text-[#1D9E75] transition-colors border border-[#e5e7eb] px-3 py-1.5 rounded-lg hover:border-[#1D9E75]/40">
                       <Mail size={12} /> E-Mail
                     </a>
-                    <button className="flex items-center gap-1.5 text-xs font-semibold text-white bg-[#1D9E75] hover:bg-[#0F6E56] transition-colors px-3 py-1.5 rounded-lg">
+                    <button className="flex items-center gap-1.5 text-xs font-semibold text-white px-3 py-1.5 rounded-lg transition-all hover:-translate-y-px" style={{ background: "linear-gradient(135deg, #1D9E75, #2ECC9A)", boxShadow: "0 4px 12px rgba(29,158,117,0.3)" }}>
                       Anfrage senden <ChevronRight size={12} />
                     </button>
                   </div>
@@ -139,15 +142,15 @@ export default function PartnerPage() {
         {/* Map + Stats */}
         <div className="space-y-4">
           {/* Map placeholder */}
-          <div className="bg-white border-2 border-dashed border-[#e5e7eb] rounded-xl h-64 flex flex-col items-center justify-center text-[#9ca3af]">
+          <div className="bg-white rounded-xl h-64 flex flex-col items-center justify-center" style={{ border: "2px dashed #E2EAE8", color: "#6B7F7A" }}>
             <MapPin size={32} className="mb-3 text-[#1D9E75] opacity-60" />
             <p className="font-medium text-sm">Kartenansicht</p>
             <p className="text-xs mt-1">Hannover, {radius} km Radius</p>
           </div>
 
           {/* Stats */}
-          <div className="bg-white border border-[#e5e7eb] rounded-xl p-5 space-y-3">
-            <h3 className="font-semibold text-[#1a1a1a] text-sm">Partner-Statistiken</h3>
+          <div className="bg-white rounded-xl p-5 space-y-3" style={{ border: "1px solid #E2EAE8", boxShadow: "0 4px 16px rgba(0,0,0,0.06)" }}>
+            <h3 className="font-bold text-sm" style={{ color: "#0D1F1B", fontFamily: "'Bricolage Grotesque', sans-serif" }}>Partner-Statistiken</h3>
             {[
               { label: "EEE-Berater verfügbar", value: ALL_PARTNERS.filter(p => p.typ === "EEE" && p.verfuegbar).length },
               { label: "Handwerksbetriebe", value: ALL_PARTNERS.filter(p => p.typ !== "EEE").length },

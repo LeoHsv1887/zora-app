@@ -74,24 +74,25 @@ export default function EinstellungenPage() {
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-[#1a1a1a] mb-1">Dein Profil & Einstellungen</h2>
-        <p className="text-[#6b7280] text-sm">Verwalte dein Konto und deine Präferenzen</p>
+        <h2 className="text-2xl font-bold mb-1" style={{ color: "#0D1F1B", fontFamily: "'Bricolage Grotesque', sans-serif" }}>Dein Profil & Einstellungen</h2>
+        <p className="text-sm" style={{ color: "#6B7F7A" }}>Verwalte dein Konto und deine Präferenzen</p>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 p-1 bg-[#f3f4f6] rounded-lg w-fit">
+      <div className="flex gap-1 p-1 rounded-lg w-fit" style={{ background: "#F1F5F4" }}>
         {TABS.map((t) => (
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${tab === t.key ? "bg-white text-[#1a1a1a] shadow-sm" : "text-[#6b7280] hover:text-[#1a1a1a]"}`}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${tab === t.key ? "bg-white shadow-sm" : "hover:text-[#0D1F1B]"}`}
+            style={{ color: tab === t.key ? "#0D1F1B" : "#6B7F7A" }}
           >
             {t.label}
           </button>
         ))}
       </div>
 
-      <div className="bg-white rounded-xl border border-[#e5e7eb] p-6">
+      <div className="bg-white rounded-xl p-6" style={{ border: "1px solid #E2EAE8", boxShadow: "0 4px 16px rgba(0,0,0,0.06)" }}>
         {/* Profil Tab */}
         {tab === "profil" && (
           <div className="space-y-6">
@@ -101,7 +102,7 @@ export default function EinstellungenPage() {
                 LV
               </div>
               <div>
-                <p className="font-semibold text-[#1a1a1a]">Profilbild</p>
+                <p className="font-semibold" style={{ color: "#0D1F1B" }}>Profilbild</p>
                 <button className="flex items-center gap-1.5 text-sm text-[#1D9E75] mt-1 hover:underline">
                   <Upload size={13} /> Foto hochladen
                 </button>
@@ -132,7 +133,7 @@ export default function EinstellungenPage() {
         {/* Firma Tab */}
         {tab === "firma" && (
           <div className="space-y-5">
-            <h3 className="font-semibold text-[#1a1a1a]">Firmendaten</h3>
+            <h3 className="font-bold" style={{ color: "#0D1F1B", fontFamily: "'Bricolage Grotesque', sans-serif" }}>Firmendaten</h3>
             <InputField label="Firmenname" value={firma.name} onChange={(v) => setFirma({ ...firma, name: v })} />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
@@ -173,7 +174,7 @@ export default function EinstellungenPage() {
         {/* Benachrichtigungen Tab */}
         {tab === "benachrichtigungen" && (
           <div className="space-y-5">
-            <h3 className="font-semibold text-[#1a1a1a]">Benachrichtigungen</h3>
+            <h3 className="font-bold" style={{ color: "#0D1F1B", fontFamily: "'Bricolage Grotesque', sans-serif" }}>Benachrichtigungen</h3>
             {[
               { key: "email" as const, label: "E-Mail-Alerts", desc: "Statusänderungen und wichtige Updates per E-Mail" },
               { key: "fristen" as const, label: "Fristen-Erinnerungen", desc: "7 und 1 Tag vor Ablauf wichtiger Fristen" },
@@ -211,7 +212,7 @@ export default function EinstellungenPage() {
             </div>
 
             <div>
-              <h3 className="font-semibold text-[#1a1a1a] mb-4">Im Pro-Plan enthalten</h3>
+              <h3 className="font-bold mb-4" style={{ color: "#0D1F1B", fontFamily: "'Bricolage Grotesque', sans-serif" }}>Im Pro-Plan enthalten</h3>
               <div className="space-y-2.5">
                 {[
                   "Unbegrenzte Förderanfragen",
@@ -231,7 +232,7 @@ export default function EinstellungenPage() {
             </div>
 
             <div className="border-t border-[#f3f4f6] pt-5">
-              <button className="flex items-center gap-2 text-sm font-semibold text-white bg-[#1D9E75] hover:bg-[#0F6E56] transition-colors px-5 py-2.5 rounded-lg">
+              <button className="flex items-center gap-2 text-sm font-semibold text-white px-5 py-2.5 rounded-lg transition-all hover:-translate-y-px" style={{ background: "linear-gradient(135deg, #1D9E75, #2ECC9A)", boxShadow: "0 4px 16px rgba(29,158,117,0.3)" }}>
                 Plan upgraden auf Enterprise
               </button>
               <p className="text-xs text-[#9ca3af] mt-2">Mehr Nutzer, mehr Speicher, dedizierter Account Manager.</p>
@@ -244,7 +245,8 @@ export default function EinstellungenPage() {
           <div className="mt-6 flex items-center gap-3">
             <button
               onClick={handleSave}
-              className="flex items-center gap-2 text-sm font-semibold text-white bg-[#1D9E75] hover:bg-[#0F6E56] transition-colors px-5 py-2.5 rounded-lg"
+              className="flex items-center gap-2 text-sm font-semibold text-white px-5 py-2.5 rounded-lg transition-all hover:-translate-y-px"
+              style={{ background: "linear-gradient(135deg, #1D9E75, #2ECC9A)", boxShadow: "0 4px 16px rgba(29,158,117,0.3)" }}
             >
               {saved ? <><Check size={15} /> Gespeichert!</> : "Änderungen speichern"}
             </button>
