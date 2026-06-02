@@ -506,7 +506,7 @@ function FoerderRechner() {
                     <CheckCircle size={12} className="text-white" />
                   </span>
                 )}
-                <span className="text-2xl">{v.icon}</span>
+                <span className="text-2xl" style={{ color: selected === v.id ? "#2ECC9A" : "white" }}>{v.icon}</span>
                 <div>
                   <p className="font-bold text-sm sm:text-base" style={{ color: selected === v.id ? "#2ECC9A" : "white" }}>{v.title}</p>
                   <p className="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.5)" }}>{v.sub}</p>
