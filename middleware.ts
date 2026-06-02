@@ -4,6 +4,10 @@ import { NextResponse, type NextRequest } from 'next/server'
 export async function middleware(req: NextRequest) {
   let res = NextResponse.next({ request: { headers: req.headers } })
 
+  // Admin-Bypass: Cookie gesetzt → Zugang ohne Supabase Session
+  const isAdmin = req.cookies.get('zora_admin')?.value === 'true'
+  if (isAdmin) return res
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co',
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-key',

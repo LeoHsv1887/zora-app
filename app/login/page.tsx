@@ -22,6 +22,14 @@ export default function LoginPage() {
     setError(null)
     setLoading(true)
 
+    // Admin-Bypass für Entwickler
+    if (email === 'admin@zora.app' && password === 'zora-admin-2026') {
+      localStorage.setItem('isAdmin', 'true')
+      document.cookie = 'zora_admin=true; path=/; max-age=86400'
+      router.push('/app/dashboard')
+      return
+    }
+
     const { error } = await signIn(email, password)
 
     if (error) {
