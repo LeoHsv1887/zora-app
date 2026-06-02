@@ -4,9 +4,8 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ZoraLogo } from '@/components/ZoraLogo'
-import { useAuth, supabase } from '@/contexts/AuthContext'
 import {
-  Eye, EyeOff, ArrowRight, AlertCircle, Loader2, Check,
+  Eye, EyeOff, ArrowRight, AlertCircle, Check,
   Home, Users, Building2, ChevronLeft,
 } from 'lucide-react'
 
@@ -53,8 +52,6 @@ function Step1({ onNext }: { onNext: (data: Step1Data) => void }) {
   })
   const [showPw, setShowPw] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
-  const { signUp } = useAuth()
 
   const validate = () => {
     if (!data.vorname.trim() || !data.nachname.trim()) return 'Bitte gib Vor- und Nachnamen ein.'
@@ -65,36 +62,18 @@ function Step1({ onNext }: { onNext: (data: Step1Data) => void }) {
     return null
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     const validationError = validate()
     if (validationError) { setError(validationError); return }
 
-    setError(null)
-    setLoading(true)
+    localStorage.setItem('zora_user', JSON.stringify({
+      vorname: data.vorname,
+      nachname: data.nachname,
+      email: data.email,
+    }))
 
-    try {
-      const { error } = await signUp(data.email, data.password, {
-        vorname: data.vorname,
-        nachname: data.nachname,
-      })
-
-      if (error) {
-        console.error('signUp error:', error)
-        setError(error.message === 'User already registered'
-          ? 'Diese E-Mail ist bereits registriert. Bitte melde dich an.'
-          : `Fehler: ${error.message} (Status: ${(error as { status?: number }).status ?? 'unbekannt'})`)
-        setLoading(false)
-        return
-      }
-
-      onNext(data)
-    } catch (err: unknown) {
-      console.error('signUp exception:', err)
-      const msg = err instanceof Error ? err.message : String(err)
-      setError(`Unerwarteter Fehler: ${msg}`)
-      setLoading(false)
-    }
+    onNext(data)
   }
 
   const set = (k: keyof Step1Data, v: string | boolean) => setData((d) => ({ ...d, [k]: v }))
@@ -173,11 +152,10 @@ function Step1({ onNext }: { onNext: (data: Step1Data) => void }) {
 
       <button
         type="submit"
-        disabled={loading}
-        className="w-full flex items-center justify-center gap-2 text-white text-sm font-bold py-3 rounded-xl transition-all hover:-translate-y-px disabled:opacity-60 disabled:translate-y-0 mt-2"
+        className="w-full flex items-center justify-center gap-2 text-white text-sm font-bold py-3 rounded-xl transition-all hover:-translate-y-px mt-2"
         style={{ background: 'linear-gradient(135deg, #1D9E75, #2ECC9A)', boxShadow: '0 8px 24px rgba(29,158,117,0.35)' }}
       >
-        {loading ? <><Loader2 size={16} className="animate-spin" /> Konto wird erstellt…</> : <>Konto erstellen <ArrowRight size={16} /></>}
+        <>Konto erstellen <ArrowRight size={16} /></>
       </button>
     </form>
   )
@@ -269,10 +247,7 @@ function Step2({ onNext, onBack }: { onNext: (typ: Nutzertyp) => void; onBack: (
   )
 }
 
-function Step3({ nutzertyp, userId, onDone }: { nutzertyp: Nutzertyp; userId: string; onDone: () => void }) {
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-
+function Step3({ nutzertyp, onDone }: { nutzertyp: Nutzertyp; onDone: () => void }) {
   const [privatData, setPrivatData] = useState({ plz: '', bundesland: '' })
   const [handwerkerData, setHandwerkerData] = useState({ firmenname: '', branche: '', bundesland: '' })
   const [kmuData, setKmuData] = useState({ firmenname: '', branche: '', mitarbeiter: '' })
@@ -281,37 +256,14 @@ function Step3({ nutzertyp, userId, onDone }: { nutzertyp: Nutzertyp; userId: st
     'Mecklenburg-Vorpommern', 'Niedersachsen', 'Nordrhein-Westfalen', 'Rheinland-Pfalz',
     'Saarland', 'Sachsen', 'Sachsen-Anhalt', 'Schleswig-Holstein', 'Thüringen', 'Baden-Württemberg']
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    setLoading(true)
-    setError(null)
-
-    try {
-      // Update profile nutzertyp
-      await supabase.from('profiles').update({ nutzertyp }).eq('id', userId)
-
-      // Save company data if applicable
-      if (nutzertyp === 'handwerker') {
-        await supabase.from('firmenprofile').upsert({
-          user_id: userId,
-          firmenname: handwerkerData.firmenname,
-          branche: handwerkerData.branche,
-          bundesland: handwerkerData.bundesland,
-        }, { onConflict: 'user_id' })
-      } else if (nutzertyp === 'kmu') {
-        await supabase.from('firmenprofile').upsert({
-          user_id: userId,
-          firmenname: kmuData.firmenname,
-          branche: kmuData.branche,
-          mitarbeiter: kmuData.mitarbeiter,
-        }, { onConflict: 'user_id' })
-      }
-
-      onDone()
-    } catch {
-      setError('Profil konnte nicht gespeichert werden. Du kannst es später in den Einstellungen anpassen.')
-      setLoading(false)
-    }
+    const extra = nutzertyp === 'privatperson' ? privatData
+      : nutzertyp === 'handwerker' ? handwerkerData
+      : kmuData
+    const existing = JSON.parse(localStorage.getItem('zora_user') || '{}')
+    localStorage.setItem('zora_user', JSON.stringify({ ...existing, nutzertyp, ...extra }))
+    onDone()
   }
 
   return (
@@ -320,13 +272,6 @@ function Step3({ nutzertyp, userId, onDone }: { nutzertyp: Nutzertyp; userId: st
         Profil vervollständigen
       </h2>
       <p className="text-sm text-[#6B7F7A] mb-5">Noch ein paar Details — damit dein Matching noch besser wird.</p>
-
-      {error && (
-        <div className="flex items-start gap-2.5 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-sm text-amber-700">
-          <AlertCircle size={16} className="flex-shrink-0 mt-0.5" />
-          {error}
-        </div>
-      )}
 
       {nutzertyp === 'privatperson' && (
         <>
@@ -392,11 +337,10 @@ function Step3({ nutzertyp, userId, onDone }: { nutzertyp: Nutzertyp; userId: st
 
       <button
         type="submit"
-        disabled={loading}
-        className="w-full flex items-center justify-center gap-2 text-white text-sm font-bold py-3 rounded-xl transition-all hover:-translate-y-px disabled:opacity-60 disabled:translate-y-0 mt-2"
+        className="w-full flex items-center justify-center gap-2 text-white text-sm font-bold py-3 rounded-xl transition-all hover:-translate-y-px mt-2"
         style={{ background: 'linear-gradient(135deg, #1D9E75, #2ECC9A)', boxShadow: '0 8px 24px rgba(29,158,117,0.35)' }}
       >
-        {loading ? <><Loader2 size={16} className="animate-spin" /> Speichern…</> : <>Dashboard öffnen <ArrowRight size={16} /></>}
+        <>Dashboard öffnen <ArrowRight size={16} /></>
       </button>
 
       <button type="button" onClick={onDone} className="w-full text-center text-xs text-[#9ca3af] hover:text-[#6b7280] mt-1">
@@ -408,7 +352,6 @@ function Step3({ nutzertyp, userId, onDone }: { nutzertyp: Nutzertyp; userId: st
 
 export default function RegistrierungPage() {
   const router = useRouter()
-  const { user } = useAuth()
   const [step, setStep] = useState(1)
   const [step1Data, setStep1Data] = useState<Step1Data | null>(null)
   const [nutzertyp, setNutzertyp] = useState<Nutzertyp>('privatperson')
@@ -467,7 +410,6 @@ export default function RegistrierungPage() {
         {step === 3 && (
           <Step3
             nutzertyp={nutzertyp}
-            userId={user?.id ?? ''}
             onDone={handleDone}
           />
         )}
