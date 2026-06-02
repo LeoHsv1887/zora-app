@@ -10,6 +10,9 @@ import {
   Home, Users, Building2, ChevronLeft,
 } from 'lucide-react'
 
+console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
+console.log('Supabase Key vorhanden:', !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
+
 type Nutzertyp = 'privatperson' | 'handwerker' | 'kmu'
 
 interface Step1Data {
@@ -70,20 +73,28 @@ function Step1({ onNext }: { onNext: (data: Step1Data) => void }) {
     setError(null)
     setLoading(true)
 
-    const { error } = await signUp(data.email, data.password, {
-      vorname: data.vorname,
-      nachname: data.nachname,
-    })
+    try {
+      const { error } = await signUp(data.email, data.password, {
+        vorname: data.vorname,
+        nachname: data.nachname,
+      })
 
-    if (error) {
-      setError(error.message === 'User already registered'
-        ? 'Diese E-Mail ist bereits registriert. Bitte melde dich an.'
-        : `Fehler: ${error.message}`)
+      if (error) {
+        console.error('signUp error:', error)
+        setError(error.message === 'User already registered'
+          ? 'Diese E-Mail ist bereits registriert. Bitte melde dich an.'
+          : `Fehler: ${error.message} (Status: ${(error as { status?: number }).status ?? 'unbekannt'})`)
+        setLoading(false)
+        return
+      }
+
+      onNext(data)
+    } catch (err: unknown) {
+      console.error('signUp exception:', err)
+      const msg = err instanceof Error ? err.message : String(err)
+      setError(`Unerwarteter Fehler: ${msg}`)
       setLoading(false)
-      return
     }
-
-    onNext(data)
   }
 
   const set = (k: keyof Step1Data, v: string | boolean) => setData((d) => ({ ...d, [k]: v }))
