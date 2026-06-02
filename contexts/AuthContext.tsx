@@ -3,10 +3,11 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import type { User, Session, AuthError } from '@supabase/supabase-js'
 import { createBrowserClient } from '@supabase/auth-helpers-nextjs'
+import { isSupabaseConfigured } from '@/lib/supabase'
 
 const supabase = createBrowserClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co',
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-key'
 )
 
 interface AuthContextType {
@@ -33,6 +34,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    if (!isSupabaseConfigured) {
+      setLoading(false)
+      return
+    }
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
       setUser(session?.user ?? null)

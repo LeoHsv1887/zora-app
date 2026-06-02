@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth, supabase } from "@/contexts/AuthContext";
+import { isSupabaseConfigured } from "@/lib/supabase";
 import {
   Check,
   ChevronRight,
@@ -1910,7 +1911,7 @@ export default function FoerderungenPage() {
 
   // Load saved programs from Supabase on mount
   useEffect(() => {
-    if (!user) return;
+    if (!user || !isSupabaseConfigured) return;
     supabase
       .from("gespeicherte_programme")
       .select("programm_id, programm_name, programm_data")
@@ -1934,6 +1935,7 @@ export default function FoerderungenPage() {
       router.push("/login");
       return;
     }
+    if (!isSupabaseConfigured) return;
 
     const exists = savedIds.has(prog.id);
 

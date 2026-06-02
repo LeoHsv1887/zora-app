@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { ALL_WIZARD_CONFIGS, WIZARD_ROUTES } from "@/lib/wizardConfigs";
 import { useAuth, supabase } from "@/contexts/AuthContext";
+import { isSupabaseConfigured } from "@/lib/supabase";
 
 // ── Types ──────────────────────────────────────────────────────────────────
 interface SavedProgram {
@@ -148,7 +149,11 @@ export default function DashboardPage() {
     : user?.email?.split("@")[0] ?? "dort";
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || !isSupabaseConfigured) {
+      setLoadingAntraege(false);
+      setLoadingSaved(false);
+      return;
+    }
 
     // Load Anträge
     supabase

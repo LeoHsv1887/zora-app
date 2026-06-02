@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Check, Upload, Loader2 } from "lucide-react";
 import { useAuth, supabase } from "@/contexts/AuthContext";
+import { isSupabaseConfigured } from "@/lib/supabase";
 
 type SettingsTab = "profil" | "firma" | "benachrichtigungen" | "abonnement";
 
@@ -80,7 +81,18 @@ export default function EinstellungenPage() {
 
   // Load profile data from Supabase
   useEffect(() => {
-    if (!user) return;
+    if (!user || !isSupabaseConfigured) {
+      if (user) {
+        setProfil({
+          vorname: user.user_metadata?.vorname ?? "",
+          nachname: user.user_metadata?.nachname ?? "",
+          email: user.email ?? "",
+          telefon: "",
+        });
+      }
+      setLoading(false);
+      return;
+    }
 
     Promise.all([
       supabase.from("profiles").select("*").eq("id", user.id).single(),
