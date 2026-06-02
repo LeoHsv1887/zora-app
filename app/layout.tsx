@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ZoraChat } from "@/components/ZoraChat";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -24,8 +25,10 @@ export default function RootLayout({
   return (
     <html lang="de" className={inter.variable}>
       <body className="font-sans antialiased">
-        {children}
-        <ZoraChat />
+        <AuthProvider>
+          {children}
+          <ZoraChat />
+        </AuthProvider>
       </body>
     </html>
   );

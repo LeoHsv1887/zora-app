@@ -3,6 +3,8 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth, supabase } from "@/contexts/AuthContext";
 import {
   Check,
   ChevronRight,
@@ -1903,27 +1905,60 @@ export default function FoerderungenPage() {
   const [demoMode, setDemoMode] = useState(false);
   const [savedProgramsList, setSavedProgramsList] = useState<SavedProgram[]>([]);
   const [partnerShown, setPartnerShown] = useState(false);
+  const { user } = useAuth();
+  const router = useRouter();
 
-  // Load saved programs from localStorage on mount
+  // Load saved programs from Supabase on mount
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem("zora-saved-programs");
-      if (raw) setSavedProgramsList(JSON.parse(raw));
-    } catch {}
-  }, []);
+    if (!user) return;
+    supabase
+      .from("gespeicherte_programme")
+      .select("programm_id, programm_name, programm_data")
+      .eq("user_id", user.id)
+      .then(({ data }) => {
+        if (!data) return;
+        setSavedProgramsList(data.map((row) => ({
+          id: row.programm_id,
+          name: row.programm_name,
+          badge: (row.programm_data as Record<string, string>)?.badge ?? "",
+          maxBetrag: (row.programm_data as Record<string, string>)?.maxBetrag ?? "",
+          foerdergeber: (row.programm_data as Record<string, string>)?.foerdergeber ?? "",
+        })));
+      });
+  }, [user]);
 
   const savedIds = useMemo(() => new Set(savedProgramsList.map((p) => p.id)), [savedProgramsList]);
 
-  const toggleSave = useCallback((prog: Foerderprogramm) => {
-    setSavedProgramsList((prev) => {
-      const exists = prev.some((p) => p.id === prog.id);
-      const next = exists
+  const toggleSave = useCallback(async (prog: Foerderprogramm) => {
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+
+    const exists = savedIds.has(prog.id);
+
+    // Optimistic update
+    setSavedProgramsList((prev) =>
+      exists
         ? prev.filter((p) => p.id !== prog.id)
-        : [...prev, { id: prog.id, name: prog.name, badge: prog.badge, maxBetrag: prog.maxBetrag, foerdergeber: prog.foerdergeber }];
-      localStorage.setItem("zora-saved-programs", JSON.stringify(next));
-      return next;
-    });
-  }, []);
+        : [...prev, { id: prog.id, name: prog.name, badge: prog.badge, maxBetrag: prog.maxBetrag, foerdergeber: prog.foerdergeber }]
+    );
+
+    if (exists) {
+      await supabase
+        .from("gespeicherte_programme")
+        .delete()
+        .eq("user_id", user.id)
+        .eq("programm_id", prog.id);
+    } else {
+      await supabase.from("gespeicherte_programme").upsert({
+        user_id: user.id,
+        programm_id: prog.id,
+        programm_name: prog.name,
+        programm_data: { badge: prog.badge, maxBetrag: prog.maxBetrag, foerdergeber: prog.foerdergeber },
+      }, { onConflict: "user_id,programm_id" });
+    }
+  }, [user, savedIds, router]);
 
   const go = useCallback((next: FlowScreen) => setScreen(next), []);
   const setField = useCallback((k: string, v: string | string[]) => {

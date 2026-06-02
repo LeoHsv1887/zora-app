@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ZoraLogo } from "@/components/ZoraLogo";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   LayoutDashboard,
   Search,
@@ -16,6 +17,7 @@ import {
   Menu,
   X,
   Newspaper,
+  LogOut,
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -38,8 +40,37 @@ const PAGE_HEADERS: Record<string, { title: string; subtitle: string }> = {
   "/app/einstellungen": { title: "Dein Profil & Einstellungen", subtitle: "Verwalte dein Konto und deine Präferenzen" },
 };
 
+function getUserInitials(user: { email?: string; user_metadata?: { vorname?: string; nachname?: string } } | null): string {
+  if (!user) return "?"
+  const v = user.user_metadata?.vorname
+  const n = user.user_metadata?.nachname
+  if (v && n) return `${v[0]}${n[0]}`.toUpperCase()
+  if (v) return v.slice(0, 2).toUpperCase()
+  if (user.email) return user.email.slice(0, 2).toUpperCase()
+  return "?"
+}
+
+function getUserDisplayName(user: { email?: string; user_metadata?: { vorname?: string; nachname?: string } } | null): string {
+  if (!user) return "Gast"
+  const v = user.user_metadata?.vorname
+  const n = user.user_metadata?.nachname
+  if (v && n) return `${v} ${n[0]}.`
+  if (v) return v
+  return user.email?.split("@")[0] ?? "Nutzer"
+}
+
 function Sidebar({ onClose }: { onClose?: () => void }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, signOut } = useAuth();
+
+  const initials = getUserInitials(user)
+  const displayName = getUserDisplayName(user)
+
+  const handleLogout = async () => {
+    await signOut()
+    router.push("/login")
+  }
 
   return (
     <div className="h-full flex flex-col" style={{ backgroundColor: "#0A1F1A" }}>
@@ -54,7 +85,7 @@ function Sidebar({ onClose }: { onClose?: () => void }) {
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 px-3 py-5 space-y-0.5">
+      <nav className="flex-1 px-3 py-5 space-y-0.5 overflow-y-auto">
         {NAV_ITEMS.map((item) => {
           const active =
             pathname === item.href ||
@@ -92,7 +123,6 @@ function Sidebar({ onClose }: { onClose?: () => void }) {
                   </span>
                 )}
               </Link>
-              {/* Sub-nav for Förderungen */}
               {isFoerderungen && active && (
                 <div className="ml-9 mt-1 mb-1 space-y-0.5">
                   {[
@@ -137,26 +167,43 @@ function Sidebar({ onClose }: { onClose?: () => void }) {
         })}
       </nav>
 
-      {/* User */}
+      {/* User + Logout */}
       <div className="px-4 py-4" style={{ borderTop: "1px solid rgba(255,255,255,0.12)" }}>
-        <div className="flex items-center gap-3">
+        <Link
+          href="/app/einstellungen"
+          className="flex items-center gap-3 mb-3 hover:opacity-80 transition-opacity"
+          onClick={onClose}
+        >
           <div
             className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white flex-shrink-0"
             style={{ background: "linear-gradient(135deg, #1D9E75, #2ECC9A)" }}
           >
-            LV
+            {initials}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-white truncate">Leonard V.</p>
-            <span
-              className="inline-block text-[10px] font-bold px-1.5 py-0.5 rounded-full text-white"
-              style={{ background: "linear-gradient(135deg, #1D9E75, #2ECC9A)" }}
-            >
-              Pro Plan
-            </span>
+            <p className="text-sm font-semibold text-white truncate">{displayName}</p>
+            <p className="text-[11px] truncate" style={{ color: "rgba(255,255,255,0.45)" }}>
+              {user?.email ?? ""}
+            </p>
           </div>
           <ChevronRight size={14} style={{ color: "rgba(255,255,255,0.4)" }} />
-        </div>
+        </Link>
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-all"
+          style={{ color: "rgba(255,255,255,0.5)" }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.backgroundColor = "rgba(255,255,255,0.08)";
+            (e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,0.8)";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.backgroundColor = "transparent";
+            (e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,0.5)";
+          }}
+        >
+          <LogOut size={15} />
+          <span>Abmelden</span>
+        </button>
       </div>
     </div>
   );
@@ -164,6 +211,9 @@ function Sidebar({ onClose }: { onClose?: () => void }) {
 
 function AppHeader({ title, subtitle }: { title: string; subtitle?: string }) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { user } = useAuth();
+
+  const initials = getUserInitials(user)
 
   return (
     <>
@@ -180,13 +230,14 @@ function AppHeader({ title, subtitle }: { title: string; subtitle?: string }) {
             <Bell size={18} />
             <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full" style={{ background: "linear-gradient(135deg, #1D9E75, #2ECC9A)" }} />
           </button>
-          <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ background: "linear-gradient(135deg, #1D9E75, #2ECC9A)" }}>
-            LV
-          </div>
+          <Link href="/app/einstellungen">
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white hover:opacity-80 transition-opacity" style={{ background: "linear-gradient(135deg, #1D9E75, #2ECC9A)" }}>
+              {initials}
+            </div>
+          </Link>
         </div>
       </header>
 
-      {/* Mobile sidebar overlay */}
       {mobileOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
           <div className="absolute inset-0 bg-black/40" onClick={() => setMobileOpen(false)} />
@@ -217,12 +268,9 @@ function PageTitleResolver({ children }: { children: React.ReactNode }) {
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex h-screen overflow-hidden" style={{ background: "#F8FAFB" }}>
-      {/* Desktop Sidebar */}
       <aside className="hidden md:block w-60 flex-shrink-0 h-full">
         <Sidebar />
       </aside>
-
-      {/* Content */}
       <div className="flex-1 flex flex-col min-w-0">
         <PageTitleResolver>{children}</PageTitleResolver>
       </div>

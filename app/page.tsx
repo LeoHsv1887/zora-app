@@ -111,11 +111,11 @@ function Navbar() {
         </nav>
 
         <div className="hidden lg:flex items-center gap-3">
-          <Link href="/app/dashboard" className="text-sm font-medium transition-colors" style={{ color: scrolled ? "rgba(255,255,255,0.65)" : "rgba(13,31,27,0.6)" }}>
+          <Link href="/login" className="text-sm font-medium transition-colors" style={{ color: scrolled ? "rgba(255,255,255,0.65)" : "rgba(13,31,27,0.6)" }}>
             Anmelden
           </Link>
           <Link
-            href="/app/dashboard"
+            href="/registrierung"
             className="text-sm font-semibold text-white px-5 py-2.5 rounded-xl transition-all duration-200 hover:-translate-y-px"
             style={{ background: "linear-gradient(135deg, #1D9E75, #2ECC9A)", boxShadow: "0 4px 16px rgba(29,158,117,0.35)" }}
           >
@@ -150,10 +150,10 @@ function Navbar() {
                 </a>
               ))}
               <div className="pt-3 space-y-2">
-                <Link href="/app/dashboard" className="block text-center py-3 px-4 text-sm font-medium rounded-xl" style={{ color: "rgba(255,255,255,0.75)", border: "1px solid rgba(255,255,255,0.15)" }}>
+                <Link href="/login" className="block text-center py-3 px-4 text-sm font-medium rounded-xl" style={{ color: "rgba(255,255,255,0.75)", border: "1px solid rgba(255,255,255,0.15)" }}>
                   Anmelden
                 </Link>
-                <Link href="/app/dashboard" className="block text-center py-3 px-4 text-sm font-semibold text-white rounded-xl" style={{ background: "linear-gradient(135deg, #1D9E75, #2ECC9A)" }}>
+                <Link href="/registrierung" className="block text-center py-3 px-4 text-sm font-semibold text-white rounded-xl" style={{ background: "linear-gradient(135deg, #1D9E75, #2ECC9A)" }}>
                   Kostenlos starten
                 </Link>
               </div>
@@ -973,7 +973,7 @@ export default function LandingPage() {
 
           <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-10">
             <Link
-              href="/app/dashboard"
+              href="/registrierung"
               className="flex items-center gap-2 text-base font-bold text-white px-8 py-4 rounded-xl transition-all hover:-translate-y-px w-full sm:w-auto justify-center"
               style={{ background: "linear-gradient(135deg, #1D9E75, #2ECC9A)", boxShadow: "0 8px 32px rgba(29,158,117,0.4)" }}
             >
@@ -1131,7 +1131,7 @@ export default function LandingPage() {
                         </div>
                         <h3 className="text-2xl font-bold mb-4" style={{ color: "#0D1F1B", fontFamily: BG }}>{SOLUTION_TABS[activeTab].title}</h3>
                         <p className="leading-relaxed mb-6" style={{ color: "#6B7F7A" }}>{SOLUTION_TABS[activeTab].desc}</p>
-                        <Link href="/app/dashboard" className="inline-flex items-center gap-2 text-sm font-semibold transition-all hover:gap-3" style={{ color: "#1D9E75" }}>
+                        <Link href="/registrierung" className="inline-flex items-center gap-2 text-sm font-semibold transition-all hover:gap-3" style={{ color: "#1D9E75" }}>
                           Jetzt ausprobieren <ArrowRight size={15} />
                         </Link>
                       </motion.div>
@@ -1195,7 +1195,7 @@ export default function LandingPage() {
 
             <motion.div variants={fadeUp} className="text-center mt-14">
               <Link
-                href="/app/dashboard"
+                href="/registrierung"
                 className="inline-flex items-center gap-2 text-base font-bold text-white px-8 py-4 rounded-xl transition-all hover:-translate-y-px"
                 style={{ background: "linear-gradient(135deg, #1D9E75, #2ECC9A)", boxShadow: "0 8px 32px rgba(29,158,117,0.35)" }}
               >
@@ -1277,7 +1277,7 @@ export default function LandingPage() {
                     ))}
                   </ul>
                   <Link
-                    href="/app/dashboard"
+                    href="/registrierung"
                     className="inline-flex items-center gap-2 text-sm font-semibold px-5 py-2.5 rounded-xl text-white transition-opacity hover:opacity-90"
                     style={{ background: a.accent }}
                   >
@@ -1365,7 +1365,7 @@ export default function LandingPage() {
                   ))}
                 </ul>
                 <Link
-                  href="/app/dashboard"
+                  href="/registrierung"
                   className="block text-center py-3 rounded-xl text-sm font-semibold transition-colors hover:bg-[#E1F5EE]"
                   style={{ border: "2px solid #1D9E75", color: "#1D9E75" }}
                 >
@@ -1404,7 +1404,7 @@ export default function LandingPage() {
                   ))}
                 </ul>
                 <Link
-                  href="/app/dashboard"
+                  href="/registrierung"
                   className="block text-center py-3 rounded-xl text-sm font-semibold text-white transition-all"
                   style={{ background: "linear-gradient(135deg, #1D9E75, #2ECC9A)", boxShadow: "0 4px 16px rgba(29,158,117,0.35)" }}
                 >
@@ -1431,7 +1431,7 @@ export default function LandingPage() {
                   ))}
                 </ul>
                 <Link
-                  href="/app/dashboard"
+                  href="/registrierung"
                   className="block text-center py-3 rounded-xl text-sm font-semibold transition-colors hover:bg-white/15"
                   style={{ background: "rgba(255,255,255,0.08)", color: "white", border: "1px solid rgba(255,255,255,0.15)" }}
                 >
@@ -1526,7 +1526,7 @@ export default function LandingPage() {
                       />
                     </div>
                     <Link
-                      href="/app/dashboard"
+                      href="/registrierung"
                       className="block w-full text-center text-base font-bold text-white px-6 py-4 rounded-xl transition-all hover:-translate-y-px"
                       style={{ background: "linear-gradient(135deg, #1D9E75, #2ECC9A)", boxShadow: "0 8px 32px rgba(29,158,117,0.4)" }}
                     >
