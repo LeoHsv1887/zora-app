@@ -1,5 +1,6 @@
 "use client";
 
+import { Search } from "lucide-react";
 import { ALL_WIZARD_CONFIGS } from "@/lib/wizardConfigs";
 import AntragWizard from "./AntragWizard";
 
@@ -14,7 +15,7 @@ export default function AntragWizardLoader({ programmId }: Props) {
     return (
       <div className="min-h-screen bg-[#f9fafb] flex items-center justify-center p-6">
         <div className="text-center">
-          <div className="text-4xl mb-4">🔍</div>
+          <Search size={40} className="mb-4 mx-auto text-[#6b7280]" />
           <h2 className="text-xl font-semibold text-[#1a1a1a] mb-2">
             Wizard nicht gefunden
           </h2>

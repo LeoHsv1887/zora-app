@@ -181,7 +181,7 @@ export default function DashboardPage() {
     <motion.div initial="hidden" animate="visible" variants={stagger} className="max-w-6xl mx-auto space-y-6">
       {/* Greeting */}
       <motion.div variants={fadeUp}>
-        <h2 className="text-2xl font-bold" style={{ color: "#0D1F1B", fontFamily: "'Bricolage Grotesque', sans-serif" }}>{getGreeting()}, Leonard! 👋</h2>
+        <h2 className="text-2xl font-bold" style={{ color: "#0D1F1B", fontFamily: "'Bricolage Grotesque', sans-serif" }}>{getGreeting()}, Leonard!</h2>
         <p className="mt-1" style={{ color: "#6B7F7A" }}>
           {getTodayFormatted()} &middot; Du hast{" "}
           <span className="text-[#f59e0b] font-semibold">2 offene Anträge</span> und{" "}

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import type {
   WizardConfig,
@@ -552,9 +553,9 @@ function SummaryStep({
                     href={s.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="ml-2 text-xs text-[#1D9E75] hover:underline"
+                    className="ml-2 text-xs text-[#1D9E75] hover:underline inline-flex items-center"
                   >
-                    →
+                    <ArrowRight size={12} />
                   </a>
                 )}
               </div>

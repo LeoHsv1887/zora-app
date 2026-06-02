@@ -11,6 +11,7 @@ import {
   Loader2,
   ArrowRight,
   CheckCircle,
+  Lightbulb,
 } from "lucide-react";
 import { foerderprogramme, type FoerderprogrammDB } from "@/lib/foerderprogramme";
 import { WIZARD_ROUTES } from "@/lib/wizardConfigs";
@@ -389,7 +390,7 @@ function DetailView({
         <div className="lg:col-span-2">
           <div className="bg-white rounded-xl border border-[#e5e7eb] p-5 sticky top-6">
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-base">💡</span>
+              <Lightbulb size={16} />
               <div>
                 <p className="font-semibold text-[#1a1a1a] text-sm leading-tight">
                   Maximiere deine Förderung

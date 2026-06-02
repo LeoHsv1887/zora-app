@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, type ReactNode } from "react";
 import { motion, useInView, AnimatePresence, type Variants } from "framer-motion";
 import {
   Search, FileText, Users, BarChart3, Bell, AlertTriangle, Zap,
   TrendingUp, CheckCircle, ArrowRight, ChevronDown, Menu, X, Star,
   Clock, Shield, ChevronUp, MapPin, Building2, Home, FlaskConical,
-  Hammer, ExternalLink,
+  Hammer, ExternalLink, Flame, Sun, Check, Heart, Sparkles,
 } from "lucide-react";
 
 // ── Font helper ────────────────────────────────────────────────────────────
@@ -192,7 +192,7 @@ function HeroDashboardMockup() {
       >
         <div className="flex items-center gap-1.5 mb-1">
           <CheckCircle size={12} style={{ color: "rgba(255,255,255,0.8)" }} />
-          <span className="text-xs font-semibold" style={{ color: "rgba(255,255,255,0.85)" }}>BEG Antrag bewilligt ✓</span>
+          <span className="text-xs font-semibold flex items-center gap-1" style={{ color: "rgba(255,255,255,0.85)" }}>BEG Antrag bewilligt <Check size={11} /></span>
         </div>
         <p className="text-lg font-bold text-white">24.500 €</p>
         <p className="text-xs" style={{ color: "rgba(255,255,255,0.7)" }}>BAFA · Sofortprogramm</p>
@@ -290,7 +290,7 @@ function HeroDashboardMockup() {
             <div className="flex items-center justify-between mb-4">
               <div>
                 <p className="text-[11px]" style={{ color: "rgba(255,255,255,0.4)" }}>Guten Morgen,</p>
-                <p className="text-sm font-bold text-white">Max Mustermann 👋</p>
+                <p className="text-sm font-bold text-white">Max Mustermann</p>
               </div>
               <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: "rgba(29,158,117,0.25)" }}>
                 <span className="text-xs font-bold" style={{ color: "#2ECC9A" }}>MM</span>
@@ -386,7 +386,7 @@ function ActivityTicker() {
             className="flex items-center justify-between w-full gap-4 text-[13px] min-w-0"
           >
             <span className="flex items-center gap-2 min-w-0">
-              <span className="font-bold flex-shrink-0" style={{ color: "#2ECC9A" }}>✓</span>
+              <Check size={13} className="flex-shrink-0" style={{ color: "#2ECC9A" }} />
               <span className="truncate" style={{ color: "rgba(255,255,255,0.6)" }}>{item.text}</span>
             </span>
             <span className="flex-shrink-0 hidden sm:block whitespace-nowrap" style={{ color: "rgba(255,255,255,0.35)" }}>
@@ -400,14 +400,14 @@ function ActivityTicker() {
 }
 
 // ── Förderrechner ──────────────────────────────────────────────────────────
-const VORHABEN_CARDS = [
-  { id: "heizung", emoji: "🔥", title: "Heizung tauschen", sub: "Wärmepumpe, Pellet, Solar" },
-  { id: "pv", emoji: "☀️", title: "PV-Anlage", sub: "Photovoltaik + Speicher" },
-  { id: "daemmung", emoji: "🏠", title: "Dämmung & Fenster", sub: "Fassade, Dach, Fenster" },
-  { id: "kombination", emoji: "⚡", title: "Mehreres kombinieren", sub: "Maximale Förderung" },
-] as const;
+type VorhabenId = "heizung" | "pv" | "daemmung" | "kombination";
 
-type VorhabenId = (typeof VORHABEN_CARDS)[number]["id"];
+const VORHABEN_CARDS: { id: VorhabenId; icon: ReactNode; title: string; sub: string }[] = [
+  { id: "heizung", icon: <Flame size={24} />, title: "Heizung tauschen", sub: "Wärmepumpe, Pellet, Solar" },
+  { id: "pv", icon: <Sun size={24} />, title: "PV-Anlage", sub: "Photovoltaik + Speicher" },
+  { id: "daemmung", icon: <Home size={24} />, title: "Dämmung & Fenster", sub: "Fassade, Dach, Fenster" },
+  { id: "kombination", icon: <Zap size={24} />, title: "Mehreres kombinieren", sub: "Maximale Förderung" },
+];
 
 function calcFoerderung(vorhaben: VorhabenId, investition: number) {
   switch (vorhaben) {
@@ -506,7 +506,7 @@ function FoerderRechner() {
                     <CheckCircle size={12} className="text-white" />
                   </span>
                 )}
-                <span className="text-2xl">{v.emoji}</span>
+                <span className="text-2xl">{v.icon}</span>
                 <div>
                   <p className="font-bold text-sm sm:text-base" style={{ color: selected === v.id ? "#2ECC9A" : "white" }}>{v.title}</p>
                   <p className="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.5)" }}>{v.sub}</p>
@@ -837,7 +837,7 @@ function Footer() {
               <p className="text-sm leading-relaxed mb-4" style={{ color: "rgba(255,255,255,0.4)" }}>
                 Die erste KI-Plattform die dich von der Fördersuche bis zur Auszahlung begleitet.
               </p>
-              <p className="text-sm mb-5" style={{ color: "rgba(255,255,255,0.3)" }}>Made with ♥ in Deutschland 🇩🇪</p>
+              <p className="text-sm mb-5 flex items-center gap-1" style={{ color: "rgba(255,255,255,0.3)" }}>Made with <Heart size={13} /> in Deutschland 🇩🇪</p>
               <div className="flex gap-3">
                 {[ExternalLink, ExternalLink, ExternalLink].map((Icon, i) => (
                   <a
@@ -949,7 +949,7 @@ export default function LandingPage() {
           >
             <span className="w-2 h-2 rounded-full pulse-green" style={{ background: "#2ECC9A" }} />
             <span className="text-sm font-semibold" style={{ color: "#1D9E75" }}>
-              ✦ KI-gestützte Förderplattform · Jetzt live
+              <Sparkles size={13} className="inline mr-1" /> KI-gestützte Förderplattform · Jetzt live
             </span>
           </motion.div>
 
@@ -993,7 +993,7 @@ export default function LandingPage() {
             className="flex items-center justify-center gap-4 mb-16 text-sm flex-wrap"
           >
             <span className="flex items-center gap-1.5" style={{ color: "#6B7F7A" }}>
-              <span className="text-amber-400">★★★★★</span> 4,9 / 5 Sterne
+              <span className="flex text-amber-400">{Array.from({ length: 5 }, (_, i) => <Star key={i} size={13} fill="currentColor" />)}</span> 4,9 / 5 Sterne
             </span>
             <span style={{ color: "rgba(29,158,117,0.5)" }}>|</span>
             <span style={{ color: "#6B7F7A" }}>2.500+ Förderprogramme</span>
@@ -1385,7 +1385,7 @@ export default function LandingPage() {
                     className="text-white text-xs font-bold px-4 py-2 rounded-full"
                     style={{ background: "linear-gradient(135deg, #1D9E75, #2ECC9A)", boxShadow: "0 4px 12px rgba(29,158,117,0.4)" }}
                   >
-                    Beliebt ★ Für Handwerksbetriebe
+                    Beliebt <Star size={11} fill="currentColor" className="inline" /> Für Handwerksbetriebe
                   </span>
                 </div>
                 <div className="mt-5">
@@ -1530,7 +1530,7 @@ export default function LandingPage() {
                       className="block w-full text-center text-base font-bold text-white px-6 py-4 rounded-xl transition-all hover:-translate-y-px"
                       style={{ background: "linear-gradient(135deg, #1D9E75, #2ECC9A)", boxShadow: "0 8px 32px rgba(29,158,117,0.4)" }}
                     >
-                      Kostenlos starten →
+                      Kostenlos starten <ArrowRight size={16} className="inline" />
                     </Link>
                   </div>
                   <p className="text-xs mt-4 text-center" style={{ color: "rgba(255,255,255,0.35)" }}>

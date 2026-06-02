@@ -13,6 +13,7 @@ import {
   ExternalLink,
   Loader2,
   FileText,
+  Calculator,
 } from "lucide-react";
 import { Foerderprogramm } from "@/types";
 
@@ -826,14 +827,14 @@ export default function Screen4Application({
     const submissionSteps = isKfw458
       ? [
           { title: "TPB-ID vom EEE erhalten", desc: "Dein EEE muss zuerst die Technische Projektbeschreibung erstellen und dir die TPB-ID mitteilen." },
-          { title: "KfW-Portal aufrufen", desc: "Gehe auf kfw.de/458 und logge dich mit deinem KfW-Konto ein (oder erstelle eines — kostenlos).", link: "https://www.kfw.de", linkLabel: "Zum KfW-Portal →" },
+          { title: "KfW-Portal aufrufen", desc: "Gehe auf kfw.de/458 und logge dich mit deinem KfW-Konto ein (oder erstelle eines — kostenlos).", link: "https://www.kfw.de", linkLabel: "Zum KfW-Portal" },
           { title: "Antrag ausfüllen", desc: "Fülle das Online-Formular aus. Alle Daten aus deinem Zora-PDF findest du zum Copy-Pasten." },
           { title: "Einreichen & warten", desc: "Nach dem Einreichen erhältst du innerhalb weniger Tage eine Vorgangsnummer per E-Mail." },
           { title: "Auf Bescheid warten", desc: "Erst nach dem Zuwendungsbescheid darfst du mit der Maßnahme beginnen!" },
         ]
       : isBegEm
       ? [
-          { title: "BAFA-Konto erstellen", desc: "Gehe auf fms.bafa.de und erstelle ein kostenloses Benutzerkonto.", link: "https://fms.bafa.de", linkLabel: "Zum BAFA-Portal →" },
+          { title: "BAFA-Konto erstellen", desc: "Gehe auf fms.bafa.de und erstelle ein kostenloses Benutzerkonto.", link: "https://fms.bafa.de", linkLabel: "Zum BAFA-Portal" },
           { title: "Neuen Antrag starten", desc: "Klicke auf '+ NEUER ANTRAG' und wähle 'BEG Einzelmaßnahmen (BEGPT)'." },
           { title: "Daten übertragen", desc: "Alle Angaben aus deinem Zora-PDF in das BAFA-Formular eintragen." },
           { title: "TPB-ID eingeben", desc: "Falls EEE beteiligt: TPB-ID des EEE im Formular eingeben." },
@@ -1057,7 +1058,7 @@ export default function Screen4Application({
         {isKfw458 && activeSection === 5 && kfwCalc && kfwCalc.gesamt > 0 && (
           <div className="mt-6 bg-[#f9fafb] border border-[#e5e7eb] rounded-xl p-4">
             <h4 className="text-sm font-semibold text-[#1a1a1a] mb-3 flex items-center gap-2">
-              <span className="text-base">🧮</span> Förderberechnung (live)
+              <Calculator size={16} /> Förderberechnung (live)
             </h4>
             <div className="space-y-1.5 text-sm">
               <div className="flex justify-between text-[#6b7280]">

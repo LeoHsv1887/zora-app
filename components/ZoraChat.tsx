@@ -23,7 +23,7 @@ function nowTime() {
 const WELCOME: Message = {
   role: "assistant",
   content:
-    "Hallo! 👋 Ich bin Zora, dein KI-Assistent für Fördermittel. Ich beantworte alle deine Fragen rund um Förderungen — kostenlos und sofort. Was möchtest du wissen?",
+    "Hallo! Ich bin Zora, dein KI-Assistent für Fördermittel. Ich beantworte alle deine Fragen rund um Förderungen — kostenlos und sofort. Was möchtest du wissen?",
   timestamp: nowTime(),
 };
 

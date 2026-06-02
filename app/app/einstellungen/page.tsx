@@ -250,7 +250,7 @@ export default function EinstellungenPage() {
             >
               {saved ? <><Check size={15} /> Gespeichert!</> : "Änderungen speichern"}
             </button>
-            {saved && <span className="text-sm text-[#1D9E75]">✓ Erfolgreich gespeichert</span>}
+            {saved && <span className="text-sm text-[#1D9E75] flex items-center gap-1"><Check size={14} /> Erfolgreich gespeichert</span>}
           </div>
         )}
       </div>

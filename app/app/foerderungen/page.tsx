@@ -23,6 +23,28 @@ import {
   AlertTriangle,
   Clock,
   X,
+  Flame,
+  Sun,
+  Battery,
+  Wind,
+  Accessibility,
+  Construction,
+  Clipboard,
+  Truck,
+  Factory,
+  Laptop,
+  Users,
+  Handshake,
+  Recycle,
+  BrickWall,
+  Microscope,
+  TrendingUp,
+  Plus,
+  Heart,
+  Lightbulb,
+  Building2,
+  DoorOpen,
+  ArrowUpRight,
 } from "lucide-react";
 import { Foerderprogramm } from "@/types";
 import { foerderprogramme, type FoerderprogrammDB } from "@/lib/foerderprogramme";
@@ -209,7 +231,7 @@ function RadioCards({ label, options, value, onChange, error, cols = 2 }: {
 }
 
 function CheckboxCards({ label, options, value, onChange }: {
-  label: string; options: { value: string; label: string; icon?: string }[];
+  label: string; options: { value: string; label: string; icon?: React.ReactNode }[];
   value: string[]; onChange: (v: string[]) => void;
 }) {
   const toggle = (v: string) => onChange(value.includes(v) ? value.filter((x) => x !== v) : [...value, v]);
@@ -397,10 +419,10 @@ function Screen1A({ profil, onChange, errors, onBack, onNext }: { profil: Profil
           <div className="space-y-4">
             <RadioCards label="Gebäudetyp *" value={(profil.gebaeudetyp as string) || ""} onChange={(v) => onChange("gebaeudetyp", v)} error={errors.gebaeudetyp} cols={4}
               options={[
-                { value: "Einfamilienhaus", label: "Einfamilienhaus", icon: "🏡" },
-                { value: "Doppelhaus / Reihenhaus", label: "Doppelhaus / Reihenhaus", icon: "🏠" },
-                { value: "Mehrfamilienhaus", label: "Mehrfamilienhaus (2–6 WE)", icon: "🏢" },
-                { value: "Eigentumswohnung", label: "Eigentumswohnung", icon: "🚪" },
+                { value: "Einfamilienhaus", label: "Einfamilienhaus", icon: <Home size={20} /> },
+                { value: "Doppelhaus / Reihenhaus", label: "Doppelhaus / Reihenhaus", icon: <Home size={20} /> },
+                { value: "Mehrfamilienhaus", label: "Mehrfamilienhaus (2–6 WE)", icon: <Building2 size={20} /> },
+                { value: "Eigentumswohnung", label: "Eigentumswohnung", icon: <DoorOpen size={20} /> },
               ]} />
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -468,16 +490,16 @@ function Screen1A({ profil, onChange, errors, onBack, onNext }: { profil: Profil
               value={(profil.vorhabenCheckboxes as string[]) || []}
               onChange={(v) => onChange("vorhabenCheckboxes", v)}
               options={[
-                { value: "Heizung tauschen", label: "Heizung tauschen", icon: "🔥" },
-                { value: "Dach / Fassade / Fenster dämmen", label: "Dach / Fassade / Fenster", icon: "🏠" },
-                { value: "PV-Anlage installieren", label: "PV-Anlage installieren", icon: "☀️" },
-                { value: "Batteriespeicher", label: "Batteriespeicher", icon: "🔋" },
-                { value: "Lüftungsanlage einbauen", label: "Lüftungsanlage", icon: "💨" },
-                { value: "Barrierefrei umbauen", label: "Barrierefrei umbauen", icon: "♿" },
-                { value: "Neubau / Kauf", label: "Neubau / Kauf", icon: "🏗️" },
-                { value: "Ladestation (Wallbox)", label: "Ladestation (Wallbox)", icon: "⚡" },
-                { value: "Energieberatung / Sanierungsfahrplan", label: "Energieberatung", icon: "📋" },
-                { value: "Sonstiges", label: "Sonstiges", icon: "➕" },
+                { value: "Heizung tauschen", label: "Heizung tauschen", icon: <Flame size={16} /> },
+                { value: "Dach / Fassade / Fenster dämmen", label: "Dach / Fassade / Fenster", icon: <Home size={16} /> },
+                { value: "PV-Anlage installieren", label: "PV-Anlage installieren", icon: <Sun size={16} /> },
+                { value: "Batteriespeicher", label: "Batteriespeicher", icon: <Battery size={16} /> },
+                { value: "Lüftungsanlage einbauen", label: "Lüftungsanlage", icon: <Wind size={16} /> },
+                { value: "Barrierefrei umbauen", label: "Barrierefrei umbauen", icon: <Accessibility size={16} /> },
+                { value: "Neubau / Kauf", label: "Neubau / Kauf", icon: <Construction size={16} /> },
+                { value: "Ladestation (Wallbox)", label: "Ladestation (Wallbox)", icon: <Zap size={16} /> },
+                { value: "Energieberatung / Sanierungsfahrplan", label: "Energieberatung", icon: <Clipboard size={16} /> },
+                { value: "Sonstiges", label: "Sonstiges", icon: <Plus size={16} /> },
               ]} />
             <div>
               <label className="block text-sm font-medium text-[#1a1a1a] mb-1.5">Beschreibe dein Vorhaben <span className="text-red-500">*</span></label>
@@ -612,12 +634,12 @@ function Screen1B({ profil, onChange, errors, onBack, onNext }: { profil: Profil
             <div className="space-y-4">
               <CheckboxCards label="Was planst du?" value={(profil.betriebVorhaben as string[]) || []} onChange={(v) => onChange("betriebVorhaben", v)}
                 options={[
-                  { value: "Neue Maschinen / Fahrzeuge", label: "Maschinen / Fahrzeuge", icon: "🚛" },
-                  { value: "Betriebsgebäude / PV-Anlage", label: "Betriebsgebäude / PV", icon: "🏭" },
-                  { value: "Digitalisierung", label: "Digitalisierung", icon: "💻" },
-                  { value: "Mitarbeiter ausbilden / einstellen", label: "Mitarbeiter", icon: "👥" },
-                  { value: "Betrieb gründen / übernehmen", label: "Gründung / Nachfolge", icon: "🤝" },
-                  { value: "Sonstiges", label: "Sonstiges", icon: "➕" },
+                  { value: "Neue Maschinen / Fahrzeuge", label: "Maschinen / Fahrzeuge", icon: <Truck size={16} /> },
+                  { value: "Betriebsgebäude / PV-Anlage", label: "Betriebsgebäude / PV", icon: <Factory size={16} /> },
+                  { value: "Digitalisierung", label: "Digitalisierung", icon: <Laptop size={16} /> },
+                  { value: "Mitarbeiter ausbilden / einstellen", label: "Mitarbeiter", icon: <Users size={16} /> },
+                  { value: "Betrieb gründen / übernehmen", label: "Gründung / Nachfolge", icon: <Handshake size={16} /> },
+                  { value: "Sonstiges", label: "Sonstiges", icon: <Plus size={16} /> },
                 ]} />
               <div>
                 <label className="block text-sm font-medium text-[#1a1a1a] mb-1.5">Beschreibung des Vorhabens <span className="text-red-500">*</span></label>
@@ -644,12 +666,12 @@ function Screen1B({ profil, onChange, errors, onBack, onNext }: { profil: Profil
             <div className="space-y-4">
               <CheckboxCards label="Welche Leistungen bietest du an?" value={(profil.leistungen as string[]) || []} onChange={(v) => onChange("leistungen", v)}
                 options={[
-                  { value: "Wärmepumpen installieren", label: "Wärmepumpen", icon: "♻️" },
-                  { value: "PV-Anlagen installieren", label: "PV-Anlagen", icon: "☀️" },
-                  { value: "Dämmmaßnahmen", label: "Dämmmaßnahmen", icon: "🧱" },
-                  { value: "Hydraulischer Abgleich", label: "Hydraul. Abgleich", icon: "🔧" },
-                  { value: "Lüftungsanlagen", label: "Lüftungsanlagen", icon: "💨" },
-                  { value: "Wallboxen installieren", label: "Wallboxen", icon: "⚡" },
+                  { value: "Wärmepumpen installieren", label: "Wärmepumpen", icon: <Recycle size={16} /> },
+                  { value: "PV-Anlagen installieren", label: "PV-Anlagen", icon: <Sun size={16} /> },
+                  { value: "Dämmmaßnahmen", label: "Dämmmaßnahmen", icon: <BrickWall size={16} /> },
+                  { value: "Hydraulischer Abgleich", label: "Hydraul. Abgleich", icon: <Wrench size={16} /> },
+                  { value: "Lüftungsanlagen", label: "Lüftungsanlagen", icon: <Wind size={16} /> },
+                  { value: "Wallboxen installieren", label: "Wallboxen", icon: <Zap size={16} /> },
                 ]} />
               <div>
                 <label className="block text-sm font-medium text-[#1a1a1a] mb-1.5">Welches Kundenprojekt möchtest du fördern lassen? <span className="text-red-500">*</span></label>
@@ -805,12 +827,12 @@ function Screen1C({ profil, onChange, errors, onBack, onNext }: { profil: Profil
           <div className="space-y-4">
             <RadioCards label="Förderthema *" value={foerderthema} onChange={(v) => onChange("foerderthema", v)} error={errors.foerderthema} cols={3}
               options={[
-                { value: "Digitalisierung & IT", label: "Digitalisierung & IT", icon: <span>💻</span> },
-                { value: "Energie & Nachhaltigkeit", label: "Energie & Nachhaltigkeit", icon: <span>♻️</span> },
-                { value: "Innovation & F&E", label: "Innovation & F&E", icon: <span>🔬</span> },
-                { value: "Investitionen & Wachstum", label: "Investitionen & Wachstum", icon: <span>📈</span> },
-                { value: "Gründung & Nachfolge", label: "Gründung & Nachfolge", icon: <span>🚀</span> },
-                { value: "Mitarbeiter & Ausbildung", label: "Mitarbeiter & Ausbildung", icon: <span>👥</span> },
+                { value: "Digitalisierung & IT", label: "Digitalisierung & IT", icon: <Laptop size={20} /> },
+                { value: "Energie & Nachhaltigkeit", label: "Energie & Nachhaltigkeit", icon: <Recycle size={20} /> },
+                { value: "Innovation & F&E", label: "Innovation & F&E", icon: <Microscope size={20} /> },
+                { value: "Investitionen & Wachstum", label: "Investitionen & Wachstum", icon: <TrendingUp size={20} /> },
+                { value: "Gründung & Nachfolge", label: "Gründung & Nachfolge", icon: <ArrowUpRight size={20} /> },
+                { value: "Mitarbeiter & Ausbildung", label: "Mitarbeiter & Ausbildung", icon: <Users size={20} /> },
               ]} />
             <div>
               <label className="block text-sm font-medium text-[#1a1a1a] mb-1.5">Beschreibung des Vorhabens <span className="text-red-500">*</span></label>
@@ -1152,11 +1174,11 @@ function Screen2({
           style={{ background: "#FAEEDA" }}
         >
           <p className="text-[#633806] leading-snug">
-            <span className="font-semibold">⚠️ Achtung:</span>{" "}
+            <span className="font-semibold flex items-center gap-1"><AlertTriangle size={14} /> Achtung:</span>{" "}
             {urgentFrist.frist.text} bei <span className="font-semibold">{urgentFrist.name}</span>. Stelle deinen Antrag rechtzeitig!
           </p>
-          <span className="text-[#854F0B] font-semibold whitespace-nowrap text-xs mt-0.5 flex-shrink-0">
-            Mehr Info →
+          <span className="text-[#854F0B] font-semibold whitespace-nowrap text-xs mt-0.5 flex-shrink-0 flex items-center gap-1">
+            Mehr Info <ArrowRight size={12} />
           </span>
         </div>
       )}
@@ -1225,7 +1247,7 @@ function Screen2({
                       className="inline-block text-white text-xs font-medium px-3 py-1 rounded-full"
                       style={{ background: "#1D9E75", fontSize: 12, fontWeight: 500, borderRadius: 20, padding: "4px 12px" }}
                     >
-                      ★ Von Zora empfohlen
+                      <Star size={11} fill="currentColor" className="inline mr-1" /> Von Zora empfohlen
                     </span>
                   </div>
                 )}
@@ -1280,7 +1302,7 @@ function Screen2({
                         isSaved ? "text-[#1D9E75]" : "text-[#9ca3af] hover:text-[#6b7280]"
                       }`}
                     >
-                      {isSaved ? "♥ Gespeichert" : "♡ Speichern"}
+                      {isSaved ? <><Heart size={12} fill="currentColor" className="inline mr-1" />Gespeichert</> : <><Heart size={12} className="inline mr-1" />Speichern</>}
                     </button>
 
                     <div className="flex items-center gap-3">
@@ -1347,12 +1369,12 @@ function Screen2({
                                 { label: "Fördersatz", value: db.foerderquote },
                                 { label: "Max. Förderbetrag", value: db.maxBetrag },
                                 { label: "Antragsstelle", value: db.antragsstelle },
-                                { label: "EEE erforderlich", value: db.eeeErforderlich ? "✓ Ja" : "Nein" },
-                                { label: "Antrag vor Beginn", value: db.antragVorMassnahme ? "✓ Pflicht" : "Nein" },
+                                { label: "EEE erforderlich", value: db.eeeErforderlich ? <span className="flex items-center gap-0.5"><Check size={11} />Ja</span> : "Nein" },
+                                { label: "Antrag vor Beginn", value: db.antragVorMassnahme ? <span className="flex items-center gap-0.5"><Check size={11} />Pflicht</span> : "Nein" },
                                 ...(db.kombinierbarMit.length > 0
                                   ? [{ label: "Kombinierbar mit", value: db.kombinierbarMit.join(", ") }]
                                   : []),
-                              ] as { label: string; value: string }[]
+                              ] as { label: string; value: React.ReactNode }[]
                             ).map((row) => (
                               <div key={row.label} className="flex items-start gap-2">
                                 <span className="text-[#9ca3af] w-36 flex-shrink-0 text-xs">{row.label}:</span>
@@ -1437,7 +1459,7 @@ function Screen2({
           href="/app/foerderungen/suche"
           className="text-xs text-[#9ca3af] hover:text-[#6b7280] transition-colors"
         >
-          Das gesuchte Programm nicht dabei? → Direktsuche
+          Das gesuchte Programm nicht dabei? <ArrowRight size={12} className="inline" /> Direktsuche
         </Link>
       </div>
 
@@ -1689,7 +1711,7 @@ function Screen3({ programmes, onBack, onNext, onSkip }: {
           {empfohlenKeys.length > 0 && (
             <div>
               <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 mb-4">
-                <span className="text-amber-500 flex-shrink-0 text-base">💡</span>
+                <Lightbulb size={16} className="text-amber-500 flex-shrink-0" />
                 <p className="text-sm text-amber-800 font-medium">
                   Diese Partner werden <strong>empfohlen</strong> — nicht verpflichtend, aber sinnvoll.
                 </p>
@@ -1709,13 +1731,13 @@ function Screen3({ programmes, onBack, onNext, onSkip }: {
               <p className="font-semibold text-[#1a1a1a]">Wichtig: Die richtige Reihenfolge</p>
             </div>
             <ol className="space-y-2.5">
-              {[
-                "Zuerst: EEE beauftragen → TPB-ID erhalten",
+              {([
+                <span key="s0">Zuerst: EEE beauftragen <ArrowRight size={12} className="inline" /> TPB-ID erhalten</span>,
                 "Dann: Angebot vom Fachbetrieb einholen",
                 "Dann: Förderantrag stellen",
                 "Erst nach Förderzusage: Auftrag erteilen",
-              ].map((step, i) => (
-                <li key={step} className="flex items-start gap-3 text-sm text-[#374151]">
+              ] as React.ReactNode[]).map((step, i) => (
+                <li key={i} className="flex items-start gap-3 text-sm text-[#374151]">
                   <span className="w-5 h-5 rounded-full bg-[#1D9E75] text-white text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">
                     {i + 1}
                   </span>
